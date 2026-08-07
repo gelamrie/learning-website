@@ -3,10 +3,10 @@ import React from 'react'
 const Hero = () => {
     return (
         <div className='isolate'>
-            <div className='asolute inset-0 -z-10'>
+            <div className='absolute inset-0 -z-10'>
                 <div className='absolute top-0 -left-1/4 w-1/2 h-1/2 bg-blue-400 dark:bg-blue-600 rounded-full blur-3xl opacity-20'></div>
             </div>
-            <div className='container mx-auto px-6 py-20 md:py-24 lg:py-28 xl:py-32'>
+            <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-20 md:py-24 lg:py-28 xl:py-32">
                 <div className='flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16'>
                     <div className='flex-1 space-y-6 lg:space-y-7'>
                         <div className='space-y-4 lg:space-y-5'>
@@ -22,7 +22,7 @@ const Hero = () => {
                                 <div>
                                     <span>Learn </span>
                                     <span className="bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 bg-clip-text text-transparent">
-                                        anywhere
+                                        anywhere,
                                     </span>
                                 </div>
 
@@ -36,7 +36,22 @@ const Hero = () => {
                             </h1>
                             <p className='text-base lg:text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl font-light'>Unlock your full potential with our comprehensive online learning platform. Access expert-led courses, hands-on projects, and a supportive community to help you achieve your personal and professional goals.
                             </p>
-                            <div className='flex gap-3 items-center'></div>
+                            <div className='flex gap-3 items-center'>
+                                <div className='h-px bg-neutral-300 dark:text-neutral-700 w-12'></div>
+                                <div>
+                                    <p className='uppercase text-xs tracking-widest text-neutral-500 dark:text-neutral-400 font-medium'>master new skills</p>
+                                </div>
+                            </div>
+                            <div className='flex flex-wrap gap-3 lg:gap-4'>
+                                <button className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-900 hover:bg-black text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-neutral-900 font-medium shadow-lg hover:shadow-neutral-900/20 dark:hover:shadow-500/20 flex items-center transition group'>
+                                    <i className='bx bx-pencil mr-2 lg:mr-3 text-lg lg:text-xl group-hover:rotate-12 transition-transform'></i>
+                                    <span>Explore Courses</span>
+                                </button>
+                                <button className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-medium flex items-center transition group'>
+                                    <i className='bx bx-wallet-alt mr-2 lg:mr-3 text-lg lg:text-xl opacity-70 group-hover:opacity-100 transition-opacity'></i>
+                                    <span>View Pricing</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
