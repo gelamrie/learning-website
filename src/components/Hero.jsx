@@ -52,6 +52,30 @@ const Hero = () => {
                                     <span>View Pricing</span>
                                 </button>
                             </div>
+                            <div className='flex flex-col sm:flex-row gap-5 sm:items-center pt-6 lg:pt-7 border-t border-neutral-200 dark:border-neutral-800'>
+                                <div className='flex -space-x-3'>
+                                    <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="User" className='w-9 h-9 lg:w-10 lg:h-10 rounded-full border-2 border-white dark:border-neutral-900 object-cover' />
+                                    <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="User" className='w-9 h-9 lg:w-10 lg:h-10 rounded-full border-2 border-white dark:border-neutral-900 object-cover' />
+                                    <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="User" className='w-9 h-9 lg:w-10 lg:h-10 rounded-full border-2 border-white dark:border-neutral-900 object-cover' />
+                                    <span className='flex items-center justify-center w-9 h-9 lg:w-10 lg:h-10 rounded-full border-2 border-white dark:border-neutral-900 bg-neutral-900 dark:bg-blue-500 text-white dark:text-neutral-900 text-xs font-medium'>+7k</span>
+                                </div>
+                                <div className='space-y-1'>
+                                    <div className='flex items-center'>
+                                        <i className='bx bxs-star text-amber-500 mr-1'></i>
+                                        <i className='bx bxs-star text-amber-500 mr-1'></i>
+                                        <i className='bx bxs-star text-amber-500 mr-1'></i>
+                                        <i className='bx bxs-star text-amber-500 mr-1'></i>
+                                        <i className='bx bxs-star-half text-amber-500 mr-1'></i>
+                                        <span className='text-neutral-500 dark:text-neutral-400 text-sm ml-1'>4.7 out of 5 stars</span>
+                                    </div>
+                                    <p className='text-sm text-neutral-600 dark:text-neutral-400 text-sm'>Trusted by{' '}<span className='font-bold text-neutral-900 dark:text-white'>7,000+</span>{' '}learners worldwide</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex-1 w-full'>
+                        <div className='relative'>
+                            <div className='relative bg-white dark:bg-neutral-900 p-4 lg:p-5 xl:p-6 rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800'></div>
                         </div>
                     </div>
                 </div>
