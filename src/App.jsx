@@ -78,7 +78,7 @@ const BackButton = () => {
             <Route path="/" element={<Hero />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/faqsec" element={<FaqSec />} />
+            <Route path="/faq" element={<FaqSec />} />
         
           </Routes>
         </main>
