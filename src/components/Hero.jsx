@@ -121,12 +121,16 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
-            <div className='hidden md:block absolute bottom-8 left-8 lg:bottom-10 lg:left-10 animate-bounce'>
+             <button
+            onClick={() => navigate('/faqsec')}
+             className='hidden md:block absolute bottom-8 left-8 lg:bottom-10 lg:left-10 animate-bounce'>
                 <div className='bg-neutral-900 text-white px-2.5 py-1.5 rounded-lg text-xm lg:text-sm flex items-center shadow-lg'>
-                    <i className='bx bx-check-circle mr-1 text-blue-500 '></i>Responsive
+                    <i className='bx bx-search-alt mr-1 text-blue-500'></i>Frequently Asked Questions
                 </div>
-            </div>
+            </button>
         </div>
+        
+        
     )
 }
 

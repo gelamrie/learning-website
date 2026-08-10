@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import Courses from './pages/Courses'
 import Pricing from './pages/Pricing'
 import Background from './components/Background'
+import FaqSec from './pages/FaqSec'
 
 import 'boxicons/css/boxicons.min.css'
 
@@ -77,6 +78,8 @@ const BackButton = () => {
             <Route path="/" element={<Hero />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/faqsec" element={<FaqSec />} />
+        
           </Routes>
         </main>
 
