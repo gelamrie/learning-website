@@ -122,12 +122,25 @@ const Hero = () => {
                 </div>
             </div>
              <button
-            onClick={() => navigate('/faqsec')}
-             className='hidden md:block absolute bottom-8 left-8 lg:bottom-10 lg:left-10 animate-bounce'>
-                <div className='bg-neutral-900 text-white px-2.5 py-1.5 rounded-lg text-xm lg:text-sm flex items-center shadow-lg'>
-                    <i className='bx bx-search-alt mr-1 text-blue-500'></i>Frequently Asked Questions
-                </div>
-            </button>
+                onClick={() => navigate('/faq')}
+                className='
+                fixed
+                bottom-4 left-4
+                sm:bottom-6 sm:left-6
+                z-50
+                flex items-center
+                bg-neutral-900 text-white
+                px-3 py-2
+                sm:px-4 sm:py-2.5
+                rounded-lg
+                text-xs sm:text-sm
+                shadow-lg
+                hover:bg-neutral-800
+                transition-colors'
+>
+    <i className="bx bx-search-alt mr-1.5 text-blue-500"></i>
+    Frequently Asked Questions
+</button>
         </div>
         
         
