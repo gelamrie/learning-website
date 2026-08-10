@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate,   useLocation } from 'react-router-dom'
+
 import Hero from './components/Hero'
-import 'boxicons/css/boxicons.min.css';
+import Courses from './pages/Courses'
+import Pricing from './pages/Pricing'
+import Background from './components/Background'
+
+import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -8,8 +14,7 @@ const App = () => {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark')
-    }
-    else {
+    } else {
       document.documentElement.classList.remove('dark')
     }
   }, [darkMode])
@@ -18,29 +23,65 @@ const App = () => {
     setDarkMode(!darkMode)
   }
 
+const BackButton = () => {
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    // Don't show the button on the landing page
+    if (location.pathname === '/') {
+        return null
+    }
+
+    return (
+        <button
+            onClick={() => navigate('/')}
+            className="absolute top-5 left-5 z-20
+                       bg-blue-500 text-white
+                       px-4 py-2 rounded-lg
+                       hover:bg-blue-600
+                       transition-colors"
+        >
+            <i className="bx bx-arrow-back mr-2"></i>
+            Back
+        </button>
+    )
+}
+
   return (
-    <div className='w-full h-screen bg-neutral-100 dark:bg-neutral-950 relative transition-colors duration-300 isolate'>
-      <div className='absolute inset-0 -z-10'>
-        <div
-          className='absolute inset-0 opacity-30 dark:hidden'
-          style={{
-            backgroundImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}>
-        </div>
-         <div
-          className='absolute inset-0 dark:hidden'
-          style={{
-            backgroundImage: 'radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px)',
-            backgroundSize: '20px 20px', 
-          }}>
-        </div>
+    <BrowserRouter>
+      <div className="relative min-h-screen">
+
+        <Background />
+        <BackButton />
+        {/* Dark mode button */}
+        <button
+          onClick={toggleDarkMode}
+          className="fixed top-3 right-3 lg:top-4 lg:right-4 z-50
+                           w-9 h-9 lg:w-10 lg:h-10
+                           flex items-center justify-center
+                           rounded-full
+                           bg-blue-500
+                           text-neutral-950
+                           shadow-lg
+                           hover:bg-blue-700
+                           transition-colors"
+        >
+          <i
+            className={`bx bx-${darkMode ? 'sun' : 'moon'} text-lg lg:text-xl`}
+          />
+        </button>
+
+        {/* Page content */}
+        <main className="relative z-10 min-h-screen">
+          <Routes>
+            <Route path="/" element={<Hero />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/pricing" element={<Pricing />} />
+          </Routes>
+        </main>
+
       </div>
-      <button onClick={toggleDarkMode} className='fixed top-3 lg:top-4 right-3 lg:right-4 w-9 h-9 lg:w-10 lg:h-10 flex justify-center items-center rounded-full bg-blue-500 text-neutral-950 shadow-lg hover:bg-blue-700 transition-colors z-10'>
-        <i className={`bx bx-${darkMode ? "sun" : "moon"} text-lg lg:text-xl`}></i>
-      </button>
-      <Hero />
-    </div>
+    </BrowserRouter>
   )
 }
 

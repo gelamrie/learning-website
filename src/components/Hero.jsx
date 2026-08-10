@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
+
+    const navigate = useNavigate()
+   
     return (
         <div className='isolate'>
             <div className='absolute inset-0 -z-10'>
@@ -43,11 +47,15 @@ const Hero = () => {
                                 </div>
                             </div>
                             <div className='flex flex-wrap gap-3 lg:gap-4'>
-                                <button className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-900 hover:bg-black text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-neutral-900 font-medium shadow-lg hover:shadow-neutral-900/20 dark:hover:shadow-500/20 flex items-center transition group'>
+                                <button 
+                                onClick={() => navigate('/courses')}
+                                className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-900 hover:bg-black text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-neutral-900 font-medium shadow-lg hover:shadow-neutral-900/20 dark:hover:shadow-500/20 flex items-center transition group'>
                                     <i className='bx bx-pencil mr-2 lg:mr-3 text-lg lg:text-xl group-hover:rotate-12 transition-transform'></i>
                                     <span>Explore Courses</span>
                                 </button>
-                                <button className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-medium flex items-center transition group'>
+                                <button 
+                                onClick={() => navigate('/pricing')}
+                                className='px-6 py-3 lg:px-7 lg:py-3.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white font-medium flex items-center transition group'>
                                     <i className='bx bx-wallet-alt mr-2 lg:mr-3 text-lg lg:text-xl opacity-70 group-hover:opacity-100 transition-opacity'></i>
                                     <span>View Pricing</span>
                                 </button>
@@ -75,6 +83,7 @@ const Hero = () => {
                     </div>
                     <div className='flex-1 w-full'>
                         <div className='relative'>
+                            <div className='absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-900 rounded-2xl blur-xl opacity-50 animate-pulse'></div>
                             <div className='relative bg-white dark:bg-neutral-900 p-4 lg:p-5 xl:p-6 rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800'>
                                 <div className='flex items-center justify-between mb-3 lg:mb-4'>
                                     <div className='flex items-center gap-2'>
@@ -103,10 +112,18 @@ const Hero = () => {
                                             <i className='bx bxl-react mr-1'></i> React
                                         </span>
                                     </div>
+                                    <button className='w-8 h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 flex items-center justify-center rounded-full bg-blue-500 text-neutral-900 hover:bg-blue-600 transition'>
+                                        <i className='bx bx-copy text-sm'></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className='hidden md:block absolute bottom-8 left-8 lg:bottom-10 lg:left-10 animate-bounce'>
+                <div className='bg-neutral-900 text-white px-2.5 py-1.5 rounded-lg text-xm lg:text-sm flex items-center shadow-lg'>
+                    <i className='bx bx-check-circle mr-1 text-blue-500 '></i>Responsive
                 </div>
             </div>
         </div>
