@@ -75,7 +75,36 @@ const Hero = () => {
                     </div>
                     <div className='flex-1 w-full'>
                         <div className='relative'>
-                            <div className='relative bg-white dark:bg-neutral-900 p-4 lg:p-5 xl:p-6 rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800'></div>
+                            <div className='relative bg-white dark:bg-neutral-900 p-4 lg:p-5 xl:p-6 rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-800'>
+                                <div className='flex items-center justify-between mb-3 lg:mb-4'>
+                                    <div className='flex items-center gap-2'>
+                                        <span className='w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-red-500'></span>
+                                        <span className='w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-amber-500'></span>
+                                        <span className='w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-green-500'></span>
+                                    </div>
+                                    <div className='text-xs text-neutral-500 dark:text-neutral-400'>React and Web Fundamentals
+                                    </div>
+                                </div>
+                                <div className='h-56 md:h-64 lg:h-60 xl:h-72 rounded-lg bg-neutral-100 dark:bg-neutral-800 overflow-hidden relative'>
+                                    <img src="/images/course-preview-light.png" alt="Course preview light" className='w-full h-full object-cover object-left-top dark:hidden' />
+                                    <img src="/images/course-preview-dark.png" alt="Course preview dark" className='w-full h-full object-cover object-left-top dark:block' />
+                                    <div className='absolute bottom-4 right-4'>
+                                        <div className='w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-900 flex items-center justify-center text-white shadow-lg animate-pulse'>
+                                            <i className='bx bx-brightness-half text-xl lg:text-2xl'></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='mt-3 lg:mt-4 flex justify-between items-center'>
+                                    <div className='flex gap-2'>
+                                        <span className='px-2.5 py-1 lg:px-3 rounded-full bg-neutral-900 text-blue-400 text-xs font-medium flex items-center'>
+                                            <i className='bx bxl-tailwind-css mr-1'></i> Tailwind v4
+                                        </span>
+                                        <span className='px-2.5 py-1 lg:px-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-indigo-900 dark:text-indigo-400 border border-neutral-200 dark:border-neutral-700 text-xs font-medium flex items-center'>
+                                            <i className='bx bxl-react mr-1'></i> React
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
