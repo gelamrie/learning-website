@@ -10,6 +10,7 @@ import CourseDetails from './pages/CourseDetails'
 import Lesson from './pages/Lesson'
 import CourseComplete from './pages/CourseComplete'
 import Subscription from './pages/Subscription'
+import ScrollToTop from './components/ScrollToTop'
 import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className='relative min-h-screen'>
 
         <Background />
