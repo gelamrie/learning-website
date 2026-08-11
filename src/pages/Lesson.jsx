@@ -33,26 +33,6 @@ const Lesson = () => {
 
     const isCompleted = completedLessons.includes(Number(lessonId))
 
-    const markAsComplete = () => {
-        const currentLesson = Number(lessonId)
-
-        if (completedLessons.includes(currentLesson)) {
-            return
-        }
-
-        const updatedLessons = [
-            ...completedLessons,
-            currentLesson
-        ]
-
-        setCompletedLessons(updatedLessons)
-
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify(updatedLessons)
-        )
-    }
-
     const courseLessons = lessons[slug]
 
     if (!courseLessons) {
@@ -95,6 +75,24 @@ const Lesson = () => {
         )
     }
 
+    const markAsCompleted = () => {
+        const storageKey = `completedLessons_${slug}`
+
+        const completedLessons =
+            JSON.parse(localStorage.getItem(storageKey)) || []
+
+        if (!completedLessons.includes(lesson.id)) {
+            completedLessons.push(lesson.id)
+
+            localStorage.setItem(
+                storageKey,
+                JSON.stringify(completedLessons)
+            )
+        }
+
+        navigate(`/courses/${slug}`)
+    }
+
     return (
         <div className='container mx-auto px-6 py-20 max-w-4xl'>
 
@@ -125,7 +123,7 @@ const Lesson = () => {
             <div className='mt-10 flex justify-center'>
 
                 <button
-                    onClick={markAsComplete}
+                    onClick={markAsCompleted}
                     disabled={isCompleted}
                     className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${isCompleted
                         ? 'bg-green-500/10 text-green-500 cursor-default'
