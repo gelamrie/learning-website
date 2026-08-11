@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import pythonLessons from '../data/pythonLessons.jsx'
@@ -20,7 +20,38 @@ const lessons = {
 const Lesson = () => {
 
     const { slug, lessonId } = useParams()
+
     const navigate = useNavigate()
+
+    const storageKey = `completedLessons_${slug}`
+
+    const [completedLessons, setCompletedLessons] = useState(() => {
+        const saved = localStorage.getItem(storageKey)
+
+        return saved ? JSON.parse(saved) : []
+    })
+
+    const isCompleted = completedLessons.includes(Number(lessonId))
+
+    const markAsComplete = () => {
+        const currentLesson = Number(lessonId)
+
+        if (completedLessons.includes(currentLesson)) {
+            return
+        }
+
+        const updatedLessons = [
+            ...completedLessons,
+            currentLesson
+        ]
+
+        setCompletedLessons(updatedLessons)
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(updatedLessons)
+        )
+    }
 
     const courseLessons = lessons[slug]
 
@@ -90,6 +121,31 @@ const Lesson = () => {
                 {lesson.content}
             </article>
 
+            {/* COMPLETE LESSON */}
+            <div className='mt-10 flex justify-center'>
+
+                <button
+                    onClick={markAsComplete}
+                    disabled={isCompleted}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${isCompleted
+                        ? 'bg-green-500/10 text-green-500 cursor-default'
+                        : 'bg-blue-500 text-neutral-950 hover:bg-blue-600'
+                        }`}
+                >
+                    <i
+                        className={`bx ${isCompleted
+                            ? 'bx-check-circle'
+                            : 'bx-check'
+                            } text-xl`}
+                    ></i>
+
+                    {isCompleted
+                        ? 'Lesson Completed'
+                        : 'Mark as Complete'}
+                </button>
+
+            </div>
+
             {/* LESSON NAVIGATION */}
             <div className='flex justify-between items-center gap-4 mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800'>
 
@@ -115,14 +171,31 @@ const Lesson = () => {
                 {/* NEXT / FINISH */}
                 {lesson.id < courseLessons.length ? (
                     <button
-                        onClick={() =>
+                        onClick={() => {
+                            if (!isCompleted) {
+                                return
+                            }
+
                             navigate(
                                 `/courses/${slug}/lesson/${lesson.id + 1}`
                             )
-                        }
-                        className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
-                        Next Lesson
-                        <i className='bx bx-right-arrow-alt'></i>
+                        }}
+                        disabled={!isCompleted}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-colors
+                        ${isCompleted
+                                ? 'bg-blue-500 text-neutral-950 hover:bg-blue-600'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed'
+                            }
+    `}
+                    >
+                        {isCompleted ? 'Next Lesson' : 'Complete Lesson First'}
+
+                        <i
+                            className={`bx ${isCompleted
+                                ? 'bx-right-arrow-alt'
+                                : 'bx-lock-alt'
+                                }`}
+                        ></i>
                     </button>
 
                 ) : (
@@ -135,6 +208,7 @@ const Lesson = () => {
                         Finish Course
                         <i className='bx bx-check'></i>
                     </button>
+
                 )}
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import courses from '../data/courses'
 
@@ -6,6 +6,7 @@ const CourseDetails = () => {
 
     const { slug } = useParams()
     const navigate = useNavigate()
+    const [showResetConfirm, setShowResetConfirm] = useState(false)
 
     const selectedPlan =
         localStorage.getItem('selectedPlan') || 'Free'
@@ -14,8 +15,6 @@ const CourseDetails = () => {
         (course) => course.slug === slug
     )
 
-    const courseLessons = course?.lessons
-    
     // Course doesn't exist
     if (!course) {
         return (
@@ -31,6 +30,26 @@ const CourseDetails = () => {
 
             </div>
         )
+    }
+
+    const completedLessons =
+        JSON.parse(
+            localStorage.getItem(`completedLessons_${slug}`)
+        ) || []
+
+    const totalLessons = course.lessons.length
+
+    const completedCount = completedLessons.length
+
+    const progressPercentage =
+        totalLessons > 0
+            ? Math.round((completedCount / totalLessons) * 100)
+            : 0
+
+    const resetProgress = () => {
+        localStorage.removeItem(`completedLessons_${slug}`)
+        setShowResetConfirm(false)
+        navigate(`/courses/${slug}`)
     }
 
     // Check course access
@@ -122,8 +141,50 @@ const CourseDetails = () => {
 
                 </div>
 
-            </div>
+                {/* COURSE PROGRESS */}
 
+                <div className='mt-8 max-w-2xl'>
+
+                    <div className='flex items-center justify-between mb-2'>
+
+                        <span className='text-sm font-medium text-neutral-700 dark:text-neutral-300'>
+                            Course Progress
+                        </span>
+
+                        <span className='text-sm font-semibold text-blue-500'>
+                            {completedCount} / {totalLessons}
+                        </span>
+
+
+                    </div>
+
+                    <div className='w-full h-3 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden'>
+
+                        <div
+                            className='h-full bg-blue-500 rounded-full transition-all duration-500'
+                            style={{
+                                width: `${progressPercentage}%`
+                            }}
+                        ></div>
+
+                    </div>
+
+                    <p className='mt-2 text-sm text-neutral-500 dark:text-neutral-400'>
+                        {completedCount} of {totalLessons} lessons completed
+                    </p>
+
+                    {completedCount > 0 && (
+                        <button
+                            onClick={() => setShowResetConfirm(true)}
+                            className='mt-4 flex items-center gap-2 text-sm text-red-500 hover:text-red-600 transition-colors'
+                        >
+                            <i className='bx bx-reset text-lg'></i>
+                            Reset Progress
+                        </button>
+                    )}
+
+                </div>
+            </div>
 
             {/* LESSONS */}
 
@@ -175,7 +236,57 @@ const CourseDetails = () => {
                 </div>
 
             </div>
+            {showResetConfirm && (
+                <div className='fixed inset-0 z-50 flex items-center justify-center px-6'>
 
+                    {/* BACKDROP */}
+                    <div
+                        className='absolute inset-0 bg-black/40 backdrop-blur-sm'
+                        onClick={() => setShowResetConfirm(false)}
+                    ></div>
+
+                    {/* MODAL */}
+                    <div className='relative w-full max-w-md rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-2xl'>
+
+                        {/* ICON */}
+                        <div className='mx-auto w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center'>
+                            <i className='bx bx-reset text-3xl text-red-500'></i>
+                        </div>
+
+                        {/* TITLE */}
+                        <h2 className='mt-5 text-xl font-bold text-center text-neutral-900 dark:text-white'>
+                            Reset Course Progress?
+                        </h2>
+
+                        {/* MESSAGE */}
+                        <p className='mt-3 text-center text-sm leading-relaxed text-neutral-600 dark:text-neutral-300'>
+                            This will mark all completed lessons as incomplete.
+                            Your progress will be permanently reset for this course.
+                        </p>
+
+                        {/* BUTTONS */}
+                        <div className='flex gap-3 mt-6'>
+
+                            <button
+                                onClick={() => setShowResetConfirm(false)}
+                                className='flex-1 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={resetProgress}
+                                className='flex-1 py-2.5 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-colors'
+                            >
+                                Reset Progress
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
         </div>
     )
 }
