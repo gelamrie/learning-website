@@ -7,7 +7,7 @@ import Pricing from './pages/Pricing'
 import Background from './components/Background'
 import FaqSec from './pages/FaqSec'
 import CourseDetails from './pages/CourseDetails'
-
+import Lesson from './pages/Lesson'
 import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
@@ -80,7 +80,7 @@ const BackButton = () => {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faq" element={<FaqSec />} />
             <Route path="/courses/:courseId" element={<CourseDetails />} />
-        
+            <Route path="/courses/:courseId/lesson/:lessonId" element={<Lesson />} />
           </Routes>
         </main>
 
