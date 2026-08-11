@@ -135,11 +135,8 @@ const Lesson = () => {
                         Finish Course
                         <i className='bx bx-check'></i>
                     </button>
-
                 )}
-
             </div>
-
         </div>
     )
 }

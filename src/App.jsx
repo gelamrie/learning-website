@@ -39,70 +39,38 @@ const App = () => {
     return (
       <button
         onClick={() => navigate('/')}
-        className="absolute top-5 left-5 z-20
-                       bg-blue-500 text-white
-                       px-4 py-2 rounded-lg
-                       hover:bg-blue-600
-                       transition-colors"
-      >
-        <i className="bx bx-home"></i>
+        className='absolute top-5 left-5 z-20 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'>
+        <i className='bx bx-home'></i>
       </button>
     )
   }
 
   return (
     <BrowserRouter>
-      <div className="relative min-h-screen">
+      <div className='relative min-h-screen'>
 
         <Background />
         <BackButton />
         {/* Dark mode button */}
         <button
           onClick={toggleDarkMode}
-          className="fixed top-3 right-3 lg:top-4 lg:right-4 z-50
-                           w-9 h-9 lg:w-10 lg:h-10
-                           flex items-center justify-center
-                           rounded-full
-                           bg-blue-500
-                           text-neutral-950
-                           shadow-lg
-                           hover:bg-blue-700
-                           transition-colors"
-        >
+          className='fixed top-3 right-3 lg:top-4 lg:right-4 z-50 w-9 h-9 lg:w-10 lg:h-10 flex items-center justify-center rounded-full bg-blue-500 text-neutral-950 shadow-lg hover:bg-blue-700 transition-colors'>
           <i
             className={`bx bx-${darkMode ? 'sun' : 'moon'} text-lg lg:text-xl`}
           />
         </button>
 
         {/* Page content */}
-        <main className="relative z-10 min-h-screen">
+        <main className='relative z-10 min-h-screen'>
           <Routes>
-
-            <Route path="/" element={<Hero />} />
-
-            <Route path="/courses" element={<Courses />} />
-
-            <Route
-              path="/courses/:slug"
-              element={<CourseDetails />}
-            />
-
-            <Route
-              path="/courses/:slug/lesson/:lessonId"
-              element={<Lesson />}
-            />
-
-            <Route path="/pricing" element={<Pricing />} />
-
-            <Route path="/faqsec" element={<FaqSec />} />
-            <Route
-              path="/courses/:slug/complete"
-              element={<CourseComplete />}
-            />
-            <Route
-              path="/subscription"
-              element={<Subscription />}
-            />
+            <Route path='/' element={<Hero />} />
+            <Route path='/courses' element={<Courses />} />
+            <Route path='/courses/:slug' element={<CourseDetails />} />
+            <Route path='/courses/:slug/lesson/:lessonId' element={<Lesson />} />
+            <Route path='/pricing' element={<Pricing />} />
+            <Route path='/faqsec' element={<FaqSec />} />
+            <Route path='/courses/:slug/complete' element={<CourseComplete />} />
+            <Route path="/subscription" element={<Subscription />} />
 
           </Routes>
         </main>
