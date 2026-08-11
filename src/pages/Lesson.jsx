@@ -74,23 +74,20 @@ const Lesson = () => {
             </div>
         )
     }
-
+    
     const markAsCompleted = () => {
-        const storageKey = `completedLessons_${slug}`
+        const updatedLessons = [...completedLessons]
 
-        const completedLessons =
-            JSON.parse(localStorage.getItem(storageKey)) || []
-
-        if (!completedLessons.includes(lesson.id)) {
-            completedLessons.push(lesson.id)
+        if (!updatedLessons.includes(lesson.id)) {
+            updatedLessons.push(lesson.id)
 
             localStorage.setItem(
                 storageKey,
-                JSON.stringify(completedLessons)
+                JSON.stringify(updatedLessons)
             )
-        }
 
-        navigate(`/courses/${slug}`)
+            setCompletedLessons(updatedLessons)
+        }
     }
 
     return (
