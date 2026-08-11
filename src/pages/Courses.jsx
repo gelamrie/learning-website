@@ -24,7 +24,7 @@ const Courses = () => {
             level: 'Beginner',
             duration: '6 weeks',
             icon: 'bx-terminal',
-            slug: 'python-programming'
+            slug: 'python'
         },
         {
             title: 'Web Development',
