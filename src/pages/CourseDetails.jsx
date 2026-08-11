@@ -196,42 +196,87 @@ const CourseDetails = () => {
 
                 <div className='space-y-3'>
 
-                    {course.lessons.map((lesson, index) => (
+                    {course.lessons.map((lesson, index) => {
 
-                        <button
-                            key={lesson.id}
-                            onClick={() =>
-                                navigate(
-                                    `/courses/${slug}/lesson/${lesson.id}`
-                                )
-                            }
-                            className='w-full flex items-center gap-4 p-5 text-left rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm hover:border-blue-400 hover:-translate-y-0.5 transition-all duration-200'>
+                        const isCompleted = completedLessons.includes(lesson.id)
 
-                            {/* LESSON NUMBER */}
+                        return (
+                            <button
+                                key={lesson.id}
+                                onClick={() =>
+                                    navigate(
+                                        `/courses/${slug}/lesson/${lesson.id}`
+                                    )
+                                }
+                                className={`w-full flex items-center gap-4 p-5 text-left rounded-xl border bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm transition-all duration-200 ${isCompleted
+                                    ? 'border-blue-400/50 hover:border-blue-500'
+                                    : 'border-neutral-200 dark:border-neutral-800 hover:border-blue-400'
+                                    } hover:-translate-y-0.5`}
+                            >
 
-                            <div className='w-10 h-10 shrink-0 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center font-semibold'>
-                                {index + 1}
-                            </div>
+                                {/* LESSON NUMBER / COMPLETION ICON */}
+                                <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-semibold ${isCompleted
+                                    ? 'bg-blue-500 text-neutral-950'
+                                    : 'bg-blue-500/10 text-blue-500'
+                                    }`}
+                                >
+                                    {isCompleted ? (
+                                        <i className='bx bx-check text-xl'></i>
+                                    ) : (
+                                        index + 1
+                                    )}
+                                </div>
 
 
-                            {/* LESSON INFO */}
+                                {/* LESSON INFO */}
 
-                            <div className='flex-1'>
+                                <div className='flex-1'>
 
-                                <h3 className='font-semibold text-neutral-900 dark:text-white'>{lesson.title}</h3>
+                                    <h3 className='font-semibold text-neutral-900 dark:text-white'>
+                                        {lesson.title}
+                                    </h3>
 
-                                <p className='mt-1 text-sm text-neutral-500 dark:text-neutral-400'>
-                                    Lesson {index + 1}
-                                </p>
+                                    <p className='mt-1 text-sm text-neutral-500 dark:text-neutral-400'>
+                                        Lesson {index + 1}
+                                    </p>
 
-                            </div>
+                                </div>
 
-                            {/* ARROW */}
 
-                            <i className='bx bx-right-arrow-alt text-xl text-blue-500'></i>
-                        </button>
+                                {/* STATUS */}
 
-                    ))}
+                                <div className='flex items-center gap-2'>
+
+                                    {isCompleted ? (
+
+                                        <span className='hidden sm:inline text-xs font-medium text-blue-500'>
+                                            Completed
+                                        </span>
+
+                                    ) : (
+
+                                        <span className='hidden sm:inline text-xs text-neutral-500 dark:text-neutral-400'>
+                                            Not completed
+                                        </span>
+
+                                    )}
+
+                                    <i
+                                        className={`
+                        bx
+                        ${isCompleted
+                                                ? 'bx-check-circle text-blue-500'
+                                                : 'bx-right-arrow-alt text-blue-500'
+                                            }
+                        text-xl
+                    `}
+                                    ></i>
+
+                                </div>
+
+                            </button>
+                        )
+                    })}
 
                 </div>
 
