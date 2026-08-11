@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate,   useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 
 import Hero from './components/Hero'
 import Courses from './pages/Courses'
@@ -8,6 +8,7 @@ import Background from './components/Background'
 import FaqSec from './pages/FaqSec'
 import CourseDetails from './pages/CourseDetails'
 import Lesson from './pages/Lesson'
+import CourseComplete from './pages/CourseComplete'
 import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
@@ -25,28 +26,28 @@ const App = () => {
     setDarkMode(!darkMode)
   }
 
-const BackButton = () => {
+  const BackButton = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
     // Don't show the button on the landing page
     if (location.pathname === '/') {
-        return null
+      return null
     }
 
     return (
-        <button
-            onClick={() => navigate('/')}
-            className="absolute top-5 left-5 z-20
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-5 left-5 z-20
                        bg-blue-500 text-white
                        px-4 py-2 rounded-lg
                        hover:bg-blue-600
                        transition-colors"
-        >
-            <i className="bx bx-home"></i>
-        </button>
+      >
+        <i className="bx bx-home"></i>
+      </button>
     )
-}
+  }
 
   return (
     <BrowserRouter>
@@ -75,12 +76,29 @@ const BackButton = () => {
         {/* Page content */}
         <main className="relative z-10 min-h-screen">
           <Routes>
+
             <Route path="/" element={<Hero />} />
+
             <Route path="/courses" element={<Courses />} />
+
+            <Route
+              path="/courses/:slug"
+              element={<CourseDetails />}
+            />
+
+            <Route
+              path="/courses/:slug/lesson/:lessonId"
+              element={<Lesson />}
+            />
+
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/faq" element={<FaqSec />} />
-            <Route path="/courses/:courseId" element={<CourseDetails />} />
-            <Route path="/courses/:courseId/lesson/:lessonId" element={<Lesson />} />
+
+            <Route path="/faqsec" element={<FaqSec />} />
+            <Route
+              path="/courses/:slug/complete"
+              element={<CourseComplete />}
+            />
+
           </Routes>
         </main>
 
