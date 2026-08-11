@@ -9,6 +9,7 @@ import FaqSec from './pages/FaqSec'
 import CourseDetails from './pages/CourseDetails'
 import Lesson from './pages/Lesson'
 import CourseComplete from './pages/CourseComplete'
+import Subscription from './pages/Subscription'
 import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
@@ -97,6 +98,10 @@ const App = () => {
             <Route
               path="/courses/:slug/complete"
               element={<CourseComplete />}
+            />
+            <Route
+              path="/subscription"
+              element={<Subscription />}
             />
 
           </Routes>
