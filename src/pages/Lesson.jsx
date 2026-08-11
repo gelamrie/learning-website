@@ -74,7 +74,57 @@ const Lesson = () => {
             </div>
         )
     }
-    
+
+    // PREVENT SKIPPING LESSONS
+
+    if (lesson.id > 1) {
+        const previousLessonId = lesson.id - 1
+
+        if (!completedLessons.includes(previousLessonId)) {
+            return (
+                <div className='container mx-auto px-6 py-20 text-center'>
+
+                    <div className='max-w-lg mx-auto rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-8'>
+
+                        <div className='mx-auto w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center'>
+                            <i className='bx bx-lock-alt text-4xl text-blue-500'></i>
+                        </div>
+
+                        <h1 className='mt-5 text-2xl font-bold text-neutral-900 dark:text-white'>
+                            Lesson Locked
+                        </h1>
+
+                        <p className='mt-3 text-neutral-600 dark:text-neutral-300'>
+                            Please complete Lesson {previousLessonId} before continuing to this lesson.
+                        </p>
+
+                        <button
+                            onClick={() =>
+                                navigate(
+                                    `/courses/${slug}/lesson/${previousLessonId}`
+                                )
+                            }
+                            className='mt-6 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
+                        >
+                            Go to Lesson {previousLessonId}
+                        </button>
+
+                        <button
+                            onClick={() =>
+                                navigate(`/courses/${slug}`)
+                            }
+                            className='block w-full mt-3 px-5 py-2.5 rounded-lg text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors'
+                        >
+                            Back to Course
+                        </button>
+
+                    </div>
+
+                </div>
+            )
+        }
+    }
+
     const markAsCompleted = () => {
         const updatedLessons = [...completedLessons]
 
