@@ -122,7 +122,7 @@ const Hero = () => {
                 </div>
             </div>
              <button
-                onClick={() => navigate('/faq')}
+                onClick={() => navigate('/faqsec')}
                 className='
                 fixed
                 bottom-4 left-4
