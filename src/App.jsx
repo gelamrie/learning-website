@@ -6,6 +6,7 @@ import Courses from './pages/Courses'
 import Pricing from './pages/Pricing'
 import Background from './components/Background'
 import FaqSec from './pages/FaqSec'
+import CourseDetails from './pages/CourseDetails'
 
 import 'boxicons/css/boxicons.min.css'
 
@@ -42,8 +43,7 @@ const BackButton = () => {
                        hover:bg-blue-600
                        transition-colors"
         >
-            <i className="bx bx-arrow-back mr-2"></i>
-            Back
+            <i className="bx bx-home"></i>
         </button>
     )
 }
@@ -79,6 +79,7 @@ const BackButton = () => {
             <Route path="/courses" element={<Courses />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faq" element={<FaqSec />} />
+            <Route path="/courses/:courseId" element={<CourseDetails />} />
         
           </Routes>
         </main>

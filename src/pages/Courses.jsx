@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Courses = () => {
+
+    const navigate = useNavigate()
 
     const [selectedCategory, setSelectedCategory] = useState('All')
 
@@ -20,12 +23,14 @@ const Courses = () => {
             category: 'Programming',
             level: 'Beginner',
             duration: '6 weeks',
-            icon: 'bx-terminal'
+            icon: 'bx-terminal',
+            slug: 'python-programming'
         },
         {
             title: 'Web Development',
             description: 'Learn how to build modern and responsive websites using HTML, CSS, and JavaScript.',
             category: 'Development',
+            slug: 'web-development',
             level: 'Beginner',
             duration: '8 weeks',
             icon: 'bx-code-alt'
@@ -36,12 +41,14 @@ const Courses = () => {
             category: 'Design',
             level: 'Beginner',
             duration: '5 weeks',
-            icon: 'bx-palette'
+            icon: 'bx-palette',
+            slug: 'ui-ux-design'
         },
         {
             title: 'Data Analytics',
             description: 'Learn how to analyze data and turn information into useful insights.',
             category: 'Data',
+            slug: 'data-analytics',
             level: 'Intermediate',
             duration: '8 weeks',
             icon: 'bx-bar-chart-alt-2'
@@ -50,6 +57,7 @@ const Courses = () => {
             title: 'Cybersecurity Fundamentals',
             description: 'Understand the fundamentals of protecting systems, networks, and information.',
             category: 'Security',
+            slug: 'cybersecurity',
             level: 'Intermediate',
             duration: '7 weeks',
             icon: 'bx-shield-quarter'
@@ -58,9 +66,10 @@ const Courses = () => {
             title: 'Database Management',
             description: 'Learn how to design, manage, and work with relational databases.',
             category: 'Development',
+            slug: 'database-management',
             level: 'Intermediate',
             duration: '6 weeks',
-            icon: 'bx-data'
+            icon: 'bx-data' 
         }
     ]
 
@@ -185,6 +194,7 @@ const Courses = () => {
 
                         {/* VIEW COURSE */}
                         <button
+                            onClick={() => navigate(`/courses/${course.slug}`)}
                             className="
                                 w-full
                                 mt-6
