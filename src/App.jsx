@@ -11,6 +11,7 @@ import Lesson from './pages/Lesson'
 import CourseComplete from './pages/CourseComplete'
 import Subscription from './pages/Subscription'
 import ScrollToTop from './components/ScrollToTop'
+import Progress from './pages/Progress'
 import 'boxicons/css/boxicons.min.css'
 
 const App = () => {
@@ -28,21 +29,53 @@ const App = () => {
     setDarkMode(!darkMode)
   }
 
-  const BackButton = () => {
+  const Navigation = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    // Don't show the button on the landing page
     if (location.pathname === '/') {
       return null
     }
 
     return (
-      <button
-        onClick={() => navigate('/')}
-        className='absolute top-5 left-5 z-20 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors'>
-        <i className='bx bx-home'></i>
-      </button>
+      <>
+        {/* HOME BUTTON */}
+        <button
+          onClick={() => navigate('/')}
+          className="absolute top-5 left-5 z-40 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          <i className="bx bx-home"></i>
+        </button>
+
+        {/* NAVIGATION */}
+        <nav className="absolute top-4 left-1/2 -translate-x-1/2 z-40">
+          <div className="flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg">
+
+            <button
+              onClick={() => navigate('/courses')}
+              className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            >
+              Courses
+            </button>
+
+            <button
+              onClick={() => navigate('/progress')}
+              className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            >
+              <i className="bx bx-bar-chart-alt-2 mr-1"></i>
+              Progress
+            </button>
+
+            <button
+              onClick={() => navigate('/pricing')}
+              className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            >
+              Pricing
+            </button>
+
+          </div>
+        </nav>
+      </>
     )
   }
 
@@ -52,7 +85,38 @@ const App = () => {
       <div className='relative min-h-screen'>
 
         <Background />
-        <BackButton />
+        <Navigation />
+        {/* NAVIGATION */}
+        {location.pathname !== '/' && (
+          <nav className="absolute top-4 left-1/2 -translate-x-1/2 z-40">
+            <div className="flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg">
+
+              <button
+                onClick={() => navigate('/courses')}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              >
+                Courses
+              </button>
+
+              <button
+                onClick={() => navigate('/progress')}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              >
+                <i className="bx bx-bar-chart-alt-2 mr-1"></i>
+                Progress
+              </button>
+
+              <button
+                onClick={() => navigate('/pricing')}
+                className="px-4 py-2 rounded-lg text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              >
+                Pricing
+              </button>
+
+            </div>
+          </nav>
+        )}
+
         {/* Dark mode button */}
         <button
           onClick={toggleDarkMode}
@@ -73,8 +137,9 @@ const App = () => {
             <Route path='/faqsec' element={<FaqSec />} />
             <Route path='/courses/:slug/complete' element={<CourseComplete />} />
             <Route path="/subscription" element={<Subscription />} />
-
+            <Route path="/progress" element={<Progress />} />
           </Routes>
+          
         </main>
 
       </div>
