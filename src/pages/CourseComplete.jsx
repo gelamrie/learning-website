@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import courses from '../data/courses'
 
 const CourseComplete = () => {
 
@@ -13,48 +14,83 @@ const CourseComplete = () => {
         cybersecurity: 'Cybersecurity Fundamentals',
         'database-management': 'Database Management'
     }
+    // Find the current course
+    const course = courses.find(
+        (course) => course.slug === slug
+    )
+
+    // Course doesn't exist
+    if (!course) {
+        return (
+            <div className="min-h-[80vh] flex items-center justify-center px-6">
+
+                <div className="max-w-lg w-full text-center">
+
+                    <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
+                        Course Not Found
+                    </h1>
+
+                    <button
+                        onClick={() => navigate('/courses')}
+                        className="mt-6 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors"
+                    >
+                        Back to Courses
+                    </button>
+                </div>
+            </div>
+        )
+    }
 
     const courseName = courseNames[slug] || 'Course'
+
+    // Get completed lessons
+    const storageKey = `completedLessons_${slug}`
+
     const completedLessons =
         JSON.parse(
-            localStorage.getItem(`completedLessons_${slug}`)
+            localStorage.getItem(storageKey)
         ) || []
 
-    return (
-        <div className='-h-[80vh] flex items-center justify-center px-6'>
-            <div className='max-w-xl w-full text-center rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-8 lg:p-12 shadow-lg'>
+    // Find the first incomplete lesson
+    const firstIncompleteLesson =
+        course.lessons.find(
+            (lesson) =>
+                !completedLessons.includes(lesson.id)
+        )
 
-                {/* TROPHY */}
+    // Protect the completion page
+    useEffect(() => {
+        if (firstIncompleteLesson) {
+            navigate(
+                `/courses/${slug}/lesson/${firstIncompleteLesson.id}`,
+                { replace: true }
+            )
+        }
+    }, [firstIncompleteLesson, navigate, slug])
+
+    return (
+        <div className='min-h-[80vh] flex items-center justify-center px-6'>
+            <div className='max-w-xl w-full text-center rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-8 lg:p-12 shadow-lg'>
                 <div className='mx-auto w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center mb-6'>
                     <i className='bx bx-trophy text-5xl text-blue-500'></i>
                 </div>
-
-                {/* MESSAGE */}
                 <p className='uppercase text-xs tracking-widest text-blue-500 font-semibold'>Course Completed</p>
-                <h1 className='mt-3 text-4xl font-bold text-neutral-900 dark:text-white'>
+                <h1 className="mt-3 text-4xl font-bold text-neutral-900 dark:text-white">
                     Congratulations! 🎉
                 </h1>
 
-                <p className='mt-4 text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed'>
-                    You've successfully completed
-                </p>
-
-                <h2 className='mt-2 text-2xl font-semibold text-blue-500'>
-                    {courseName}
-                
-                <div className='mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-500 font-semibold'>
-                        <i className="bx bx-check-circle text-xl"></i>
-
-                        {completedLessons.length} / 8 Lessons Completed
-                    </div>
-
+                <h2 className="mt-3 text-xl font-semibold text-neutral-900 dark:text-white">
+                    {course.title}
                 </h2>
-                <p className='mt-3 text-sm text-neutral-500 dark:text-neutral-400'>
-                    Great job! Keep learning and continue building
-                    your skills.
+
+                <p className='mt-4 text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed'>
+                    You've successfully completed every lesson in this course.
                 </p>
 
-                {/* BUTTONS */}
+                <p className='mt-3 text-sm text-neutral-500 dark:text-neutral-400'>
+                    {course.lessons.length} / {course.lessons.length} lessons completed
+                </p>
+
                 <div className='flex flex-col sm:flex-row justify-center gap-3 mt-8'>
                     <button
                         onClick={() =>
