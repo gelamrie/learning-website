@@ -18,7 +18,7 @@ import CourseComplete from './pages/CourseComplete'
 import Subscription from './pages/Subscription'
 import ScrollToTop from './components/ScrollToTop'
 import Progress from './pages/Progress'
-
+import PageTransition from './components/PageTransition'
 import 'boxicons/css/boxicons.min.css'
 
 
@@ -42,15 +42,15 @@ const Navigation = () => {
       </button>
 
       {/* NAVIGATION */}
-      <nav className='absolute top-4 left-1/2 -translate-x-1/2 z-40'>
-        <div className='flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg'>
+      <nav className='absolute top-4 left-1/2 -translate-x-1/2 z-40 w-max max-w-[calc(100vw-7rem)]'>
+        <div className="flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg">
 
           {/* COURSES */}
           <button
             onClick={() => navigate('/courses')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/courses'
-                ? 'bg-blue-500/10 text-blue-500 cursor-default'
-                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-0.5 ${location.pathname === '/courses'
+              ? 'bg-blue-500/10 text-blue-500 cursor-default'
+              : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
               }`}>
 
             {location.pathname === '/courses' ? (
@@ -66,9 +66,9 @@ const Navigation = () => {
           {/* PROGRESS */}
           <button
             onClick={() => navigate('/progress')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/progress'
-                ? 'bg-blue-500/10 text-blue-500 cursor-default'
-                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-0.5 ${location.pathname === '/progress'
+              ? 'bg-blue-500/10 text-blue-500 cursor-default'
+              : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
               }`}>
             {location.pathname === '/progress' ? (
               <i className="bx bx-check text-lg"></i>
@@ -83,9 +83,9 @@ const Navigation = () => {
           {/* PRICING */}
           <button
             onClick={() => navigate('/pricing')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/pricing'
-                ? 'bg-blue-500/10 text-blue-500 cursor-default'
-                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-0.5 ${location.pathname === '/pricing'
+              ? 'bg-blue-500/10 text-blue-500 cursor-default'
+              : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
               }`}>
             {location.pathname === '/pricing' ? (
               <i className="bx bx-check text-lg"></i>
@@ -134,19 +134,21 @@ const App = () => {
         </button>
 
         {/* PAGE CONTENT */}
-        <main className='relative z-10 min-h-screen'>
-          <Routes>
-            <Route path='/' element={<Hero />} />
-            <Route path='/courses' element={<Courses />} />
-            <Route path='/courses/:slug' element={<CourseDetails />} />
-            <Route path='/courses/:slug/lesson/:lessonId' element={<Lesson />} />
-            <Route path='/pricing' element={<Pricing />} />
-            <Route path='/faqsec' element={<FaqSec />} />
-            <Route path='/courses/:slug/complete' element={<CourseComplete />} />
-            <Route path='/subscription' element={<Subscription />} />
-            <Route path='/progress' element={<Progress />} />
+        <main className='relative z-10'>
+          <PageTransition>
+            <Routes>
+              <Route path='/' element={<Hero />} />
+              <Route path='/courses' element={<Courses />} />
+              <Route path='/courses/:slug' element={<CourseDetails />} />
+              <Route path='/courses/:slug/lesson/:lessonId' element={<Lesson />} />
+              <Route path='/pricing' element={<Pricing />} />
+              <Route path='/faqsec' element={<FaqSec />} />
+              <Route path='/courses/:slug/complete' element={<CourseComplete />} />
+              <Route path='/subscription' element={<Subscription />} />
+              <Route path='/progress' element={<Progress />} />
 
-          </Routes>
+            </Routes>
+          </PageTransition>
         </main>
       </div>
     </BrowserRouter>

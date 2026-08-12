@@ -6,3 +6,19 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-page-enter {
+    animation: pageEnter 0.50s ease-out;
+}
