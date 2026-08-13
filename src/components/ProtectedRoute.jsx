@@ -31,13 +31,7 @@ const ProtectedRoute = ({ children }) => {
     }, [])
 
     if (loading) {
-        return (
-            <div className='min-h-screen flex items-center justify-center'>
-                <p className='text-neutral-600 dark:text-neutral-400'>
-                    Loading...
-                </p>
-            </div>
-        )
+        return null
     }
 
     if (!session) {
