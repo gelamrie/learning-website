@@ -22,7 +22,26 @@ const Login = () => {
         })
 
         if (error) {
-            setError(error.message)
+            const message = error.message.toLowerCase()
+
+            if (message.includes('invalid login credentials')) {
+                setError(
+                    'The email or password you entered is incorrect. Please check your credentials and try again.'
+                )
+            } else if (message.includes('email not confirmed')) {
+                setError(
+                    'Your email has not been verified yet. Please check your inbox and verify your email before logging in.'
+                )
+            } else if (message.includes('too many requests')) {
+                setError(
+                    'Too many login attempts. Please wait a moment and try again.'
+                )
+            } else {
+                setError(
+                    'We couldn’t log you in right now. Please check your information and try again.'
+                )
+            }
+
             setLoading(false)
             return
         }
@@ -77,10 +96,18 @@ const Login = () => {
                         </div>
                         {/* ERROR */}
                         {error && (
-                            <div className='rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3'>
-                                <p className='text-sm text-red-500'>
-                                    {error}
-                                </p>
+                            <div className='flex items-start gap-3 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3'>
+                                <i className='bx bx-error-circle text-xl text-red-500 mt-0.5'></i>
+
+                                <div>
+                                    <p className='text-sm font-medium text-red-500'>
+                                        Login failed
+                                    </p>
+
+                                    <p className='text-sm text-red-500/80 mt-1'>
+                                        {error}
+                                    </p>
+                                </div>
                             </div>
                         )}
 

@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 const UserMenu = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState(null)
+    const [showLogoutModal, setShowLogoutModal] = useState(false)
 
     useEffect(() => {
         const getUser = async () => {
@@ -13,11 +14,11 @@ const UserMenu = () => {
         }
 
         getUser()
-
         const {
             data: { subscription }
         } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null)
+            setShowLogoutModal(false)
         })
 
         return () => {
@@ -26,37 +27,71 @@ const UserMenu = () => {
     }, [])
 
     const handleLogout = async () => {
-        await supabase.auth.signOut()
-        navigate('/login')
-    }
+        setShowLogoutModal(false)
 
-    // Don't show anything when nobody is logged in
+        await supabase.auth.signOut()
+        navigate("/")
+    }
+    
     if (!user) return null
 
     return (
-        <div className='fixed top-3 right-16 lg:top-4 lg:right-16 z-50 flex items-center gap-2'>
+        <>
+            <div className='fixed top-3 right-16 lg:top-4 lg:right-16 z-50 flex items-center gap-2'>
+                {/* USER */}
+                <div className='hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg'>
+                    <div className='w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center'>
+                        <i className='bx bx-user'></i>
+                    </div>
 
-            {/* USER */}
-            <div className='hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg'>
-                <div className='w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center'>
-                    <i className='bx bx-user'></i>
+                    <span className='text-sm text-neutral-700 dark:text-neutral-300 max-w-[180px] truncate'>
+                        {user.email}
+                    </span>
                 </div>
 
-                <span className='text-sm text-neutral-700 dark:text-neutral-300 max-w-[180px] truncate'>
-                    {user.email}
-                </span>
+                {/* LOGOUT */}
+                <button
+                    onClick={() => setShowLogoutModal(true)}
+                    className='w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:scale-105 transition-transform'
+                    title='Log out'>
+                    <i className='bx bx-log-out text-lg'></i>
+                </button>
+
             </div>
+            {/* LOGOUT MODAL */}
+            {showLogoutModal && (
+                <div className='fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm'>
+                    <div className='w-[90%] max-w-sm rounded-2xl bg-white dark:bg-neutral-900 shadow-2xl border border-neutral-200 dark:border-neutral-800 p-6'>
+                        <div className='flex items-center gap-3 mb-4'>
+                            <div className='w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center'>
+                                <i className='bx bx-log-out text-xl text-blue-500'></i>
+                            </div>
+                            <h2 className='text-lg font-semibold text-neutral-900 dark:text-white'>
+                                Log out?
+                            </h2>
+                        </div>
 
-            {/* LOGOUT */}
-            <button
-                onClick={handleLogout}
-                className='w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:scale-105 transition-transform'
-                title='Log out'
-            >
-                <i className='bx bx-log-out text-lg'></i>
-            </button>
+                        <p className='text-sm text-neutral-600 dark:text-neutral-400 mb-6'>
+                            Are you sure you want to log out of your account?
+                        </p>
 
-        </div>
+                        <div className='flex justify-end gap-3'>
+                            <button
+                                onClick={() => setShowLogoutModal(false)}
+                                className='px-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition'>
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={handleLogout}
+                                className='px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition'>
+                                Log Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     )
 }
 
