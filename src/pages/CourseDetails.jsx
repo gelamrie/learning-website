@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 import courses from '../data/courses'
 
 const CourseDetails = () => {
@@ -32,10 +33,45 @@ const CourseDetails = () => {
         )
     }
 
-    const completedLessons =
-        JSON.parse(
-            localStorage.getItem(`completedLessons_${slug}`)
-        ) || []
+    const [completedLessons, setCompletedLessons] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    // Load progress from Supabase
+    useEffect(() => {
+        const loadProgress = async () => {
+            setLoading(true)
+
+            const {
+                data: { user }
+            } = await supabase.auth.getUser()
+
+            if (!user) {
+                setLoading(false)
+                return
+            }
+
+            const { data, error } = await supabase
+                .from('user_progress')
+                .select('completed_lessons')
+                .eq('user_id', user.id)
+                .eq('course_slug', slug)
+                .maybeSingle()
+
+            if (error) {
+                console.error('Error loading progress:', error)
+                setLoading(false)
+                return
+            }
+
+            if (data) {
+                setCompletedLessons(data.completed_lessons || [])
+            }
+
+            setLoading(false)
+        }
+
+        loadProgress()
+    }, [slug])
 
     const totalLessons = course.lessons.length
 
@@ -46,10 +82,39 @@ const CourseDetails = () => {
             ? Math.round((completedCount / totalLessons) * 100)
             : 0
 
-    const resetProgress = () => {
-        localStorage.removeItem(`completedLessons_${slug}`)
+    const resetProgress = async () => {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser()
+
+        if (!user) {
+            return
+        }
+
+        const { error } = await supabase
+            .from('user_progress')
+            .upsert(
+                {
+                    user_id: user.id,
+                    course_slug: slug,
+                    completed_lessons: [],
+                    updated_at: new Date().toISOString()
+                },
+                {
+                    onConflict: 'user_id,course_slug'
+                }
+            )
+
+        if (error) {
+            console.error('Error resetting progress:', error)
+            return
+        }
+
+        // Update React state
+        setCompletedLessons([])
+
+        // Close modal
         setShowResetConfirm(false)
-        navigate(`/courses/${slug}`)
     }
 
     // Check course access

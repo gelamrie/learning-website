@@ -8,6 +8,7 @@ const ProgressDashboard = () => {
     const navigate = useNavigate()
     const [progressData, setProgressData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [resetCourseTarget, setResetCourseTarget] = useState(null)
 
     // LOAD USER PROGRESS
     useEffect(() => {
@@ -42,6 +43,50 @@ const ProgressDashboard = () => {
 
         loadProgress()
     }, [navigate])
+
+    // RESET COURSE PROGRESS
+    const resetCourseProgress = async (slug) => {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser()
+
+        if (!user) return
+
+        const { error } = await supabase
+            .from('user_progress')
+            .upsert(
+                {
+                    user_id: user.id,
+                    course_slug: slug,
+                    completed_lessons: [],
+                    updated_at: new Date().toISOString()
+                },
+                {
+                    onConflict: 'user_id,course_slug'
+                }
+            )
+
+        if (error) {
+            console.error('Error resetting progress:', error)
+            return
+        }
+
+        // Update local state
+        setProgressData((prev) => {
+            const exists = prev.some((item) => item.course_slug === slug)
+            if (exists) {
+                return prev.map((item) =>
+                    item.course_slug === slug
+                        ? { ...item, completed_lessons: [] }
+                        : item
+                )
+            } else {
+                return [...prev, { course_slug: slug, completed_lessons: [] }]
+            }
+        })
+
+        setResetCourseTarget(null)
+    }
 
     // GET COMPLETED LESSONS
     const getCompletedLessons = (slug) => {
@@ -304,52 +349,120 @@ const ProgressDashboard = () => {
                                 </div>
 
                                 {/* ACTION */}
-                                <div className='mt-5 flex justify-end'>
-                                    {progress === 100 ? (
+                                <div className='mt-5 flex items-center justify-between gap-3'>
+                                    {completed.length > 0 ? (
                                         <button
-                                            onClick={() =>
-                                                navigate(
-                                                    `/courses/${course.slug}/complete`
-                                                )
-                                            }
-                                            className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/10 text-green-500 font-medium hover:bg-green-500/20 transition-colors'>
-                                            <i className='bx bx-check-circle'></i>
-                                            Completed
-                                        </button>
-                                    ) : nextLesson ? (
-                                        <button
-                                            onClick={() =>
-                                                navigate(
-                                                    `/courses/${course.slug}/lesson/${nextLesson.id}`
-                                                )
-                                            }
-                                            className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
-
-                                            {progress === 0
-                                                ? 'Start Course'
-                                                : 'Continue Learning'}
-
-                                            <i className='bx bx-right-arrow-alt'></i>
+                                            onClick={() => setResetCourseTarget(course)}
+                                            className='flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-red-500 hover:bg-red-500/10 transition-colors'
+                                            title='Reset Course Progress'
+                                        >
+                                            <i className='bx bx-reset text-base'></i>
+                                            Reset Progress
                                         </button>
                                     ) : (
-
-                                        <button
-                                            onClick={() =>
-                                                navigate(
-                                                    `/courses/${course.slug}`
-                                                )
-                                            }
-                                            className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
-                                            View Course
-                                            <i className='bx bx-right-arrow-alt'></i>
-                                        </button>
+                                        <div></div>
                                     )}
+
+                                    <div className='flex items-center gap-2'>
+                                        {progress === 100 ? (
+                                            <button
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/courses/${course.slug}/complete`
+                                                    )
+                                                }
+                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/10 text-green-500 font-medium hover:bg-green-500/20 transition-colors'>
+                                                <i className='bx bx-check-circle'></i>
+                                                Completed
+                                            </button>
+                                        ) : nextLesson ? (
+                                            <button
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/courses/${course.slug}/lesson/${nextLesson.id}`
+                                                    )
+                                                }
+                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
+
+                                                {progress === 0
+                                                    ? 'Start Course'
+                                                    : 'Continue Learning'}
+
+                                                <i className='bx bx-right-arrow-alt'></i>
+                                            </button>
+                                        ) : (
+
+                                            <button
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/courses/${course.slug}`
+                                                    )
+                                                }
+                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
+                                                View Course
+                                                <i className='bx bx-right-arrow-alt'></i>
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         )
                     })}
                 </div>
             </div>
+
+            {/* RESET CONFIRMATION MODAL */}
+            {resetCourseTarget && (
+                <div className='fixed inset-0 z-50 flex items-center justify-center px-6'>
+
+                    {/* BACKDROP */}
+                    <div
+                        className='absolute inset-0 bg-black/40 backdrop-blur-sm'
+                        onClick={() => setResetCourseTarget(null)}
+                    ></div>
+
+                    {/* MODAL */}
+                    <div className='relative w-full max-w-md rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-2xl z-10'>
+
+                        {/* ICON */}
+                        <div className='mx-auto w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center'>
+                            <i className='bx bx-reset text-3xl text-red-500'></i>
+                        </div>
+
+                        {/* TITLE */}
+                        <h2 className='mt-5 text-xl font-bold text-center text-neutral-900 dark:text-white'>
+                            Reset Progress for {resetCourseTarget.title}?
+                        </h2>
+
+                        {/* MESSAGE */}
+                        <p className='mt-3 text-center text-sm leading-relaxed text-neutral-600 dark:text-neutral-300'>
+                            This will mark all completed lessons as incomplete for this course.
+                            Your progress will be permanently reset.
+                        </p>
+
+                        {/* BUTTONS */}
+                        <div className='flex gap-3 mt-6'>
+
+                            <button
+                                onClick={() => setResetCourseTarget(null)}
+                                className='flex-1 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={() => resetCourseProgress(resetCourseTarget.slug)}
+                                className='flex-1 py-2.5 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-colors'
+                            >
+                                Reset Progress
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
         </div>
     )
 }
