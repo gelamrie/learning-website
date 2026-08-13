@@ -6,6 +6,7 @@ import {
   useNavigate,
   useLocation
 } from 'react-router-dom'
+import { supabase } from './lib/supabase'
 
 import Hero from './components/Hero'
 import Courses from './pages/Courses'
@@ -22,6 +23,7 @@ import PageTransition from './components/PageTransition'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ProtectedRoute from './components/ProtectedRoute'
+import UserMenu from './components/UserMenu'
 import 'boxicons/css/boxicons.min.css'
 
 
@@ -105,6 +107,36 @@ const Navigation = () => {
   )
 }
 
+const [user, setUser] = useState(null)
+const [authLoading, setAuthLoading] = useState(true)
+
+useEffect(() => {
+
+  const getUser = async () => {
+
+    const {
+      data: { user }
+    } = await supabase.auth.getUser()
+
+    setUser(user)
+    setAuthLoading(false)
+  }
+
+  getUser()
+
+  const {
+    data: { subscription }
+  } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      setUser(session?.user ?? null)
+    }
+  )
+
+  return () => {
+    subscription.unsubscribe()
+  }
+
+}, [])
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -129,6 +161,7 @@ const App = () => {
         <Background />
         {/* NAVIGATION */}
         <Navigation />
+        <UserMenu />
         {/* DARK MODE */}
         <button
           onClick={toggleDarkMode}
@@ -144,7 +177,7 @@ const App = () => {
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/courses' element={<ProtectedRoute><Courses /></ProtectedRoute>} />
-              <Route path='/courses/:slug'element={<ProtectedRoute><CourseDetails /></ProtectedRoute>}/>
+              <Route path='/courses/:slug' element={<ProtectedRoute><CourseDetails /></ProtectedRoute>} />
               <Route path='/courses/:slug/lesson/:lessonId' element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
               <Route path='/pricing' element={<Pricing />} />
               <Route path='/faqsec' element={<FaqSec />} />
