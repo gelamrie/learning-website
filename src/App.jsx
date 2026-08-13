@@ -6,7 +6,6 @@ import {
   useNavigate,
   useLocation
 } from 'react-router-dom'
-import { supabase } from './lib/supabase'
 
 import Hero from './components/Hero'
 import Courses from './pages/Courses'
@@ -107,36 +106,41 @@ const Navigation = () => {
   )
 }
 
-const [user, setUser] = useState(null)
-const [authLoading, setAuthLoading] = useState(true)
+const AuthRedirect = () => {
+  const navigate = useNavigate()
 
-useEffect(() => {
+  useEffect(() => {
+    const handleAuthRedirect = async () => {
+      const hash = window.location.hash
 
-  const getUser = async () => {
+      if (!hash) return
 
-    const {
-      data: { user }
-    } = await supabase.auth.getUser()
+      const params = new URLSearchParams(hash.substring(1))
+      const type = params.get('type')
 
-    setUser(user)
-    setAuthLoading(false)
-  }
+      if (type === 'signup') {
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname
+        )
 
-  getUser()
+        const {
+          data: { user }
+        } = await supabase.auth.getUser()
 
-  const {
-    data: { subscription }
-  } = supabase.auth.onAuthStateChange(
-    (_event, session) => {
-      setUser(session?.user ?? null)
+        if (user) {
+          navigate('/courses', { replace: true })
+        }
+      }
     }
-  )
 
-  return () => {
-    subscription.unsubscribe()
-  }
+    handleAuthRedirect()
+  }, [navigate])
 
-}, [])
+  return null
+}
+
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -161,6 +165,7 @@ const App = () => {
         <Background />
         {/* NAVIGATION */}
         <Navigation />
+        <AuthRedirect />
         <UserMenu />
         {/* DARK MODE */}
         <button
