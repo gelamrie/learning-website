@@ -136,25 +136,20 @@ const CourseComplete = () => {
     }
 
 
-    /*
-     * COURSE NOT FOUND
-     */
+    // COURSE NOT FOUND
+ 
     if (!course) {
         return null
     }
 
-
-    /*
-     * COURSE NOT COMPLETE
-     */
+    // COURSE NOT COMPLETE
+     
     if (firstIncompleteLesson) {
         return null
     }
 
-
-    /*
-     * COURSE COMPLETE
-     */
+    //COURSE COMPLETE
+     
     return (
         <div className='min-h-[80vh] flex items-center justify-center px-6'>
 

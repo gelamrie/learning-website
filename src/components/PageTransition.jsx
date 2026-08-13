@@ -7,8 +7,7 @@ const PageTransition = ({ children }) => {
     return (
         <div
             key={location.pathname}
-            className="animate-page-enter"
-        >
+            className='animate-page-enter'>
             {children}
         </div>
     )

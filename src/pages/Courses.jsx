@@ -83,33 +83,25 @@ const Courses = () => {
 
             {/* COURSE CARDS */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8'>
-
                 {filteredCourses.map((course) => (
-
                     <div
                         key={course.title}
-                        className='group rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6 hover:-translate-y-1 hover:border-blue-400 transition-all duration-300'
-                    >
+                        className='group rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6 hover:-translate-y-1 hover:border-blue-400 transition-all duration-300' >
 
                         {/* ICON */}
                         <div className='w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-5'>
-                            <i
-                                className={`bx ${course.icon} text-2xl text-blue-500`}
-                            ></i>
+                            <i className={`bx ${course.icon} text-2xl text-blue-500`} ></i>
                         </div>
-
 
                         {/* TITLE */}
                         <h2 className='text-xl font-semibold text-neutral-900 dark:text-white'>
                             {course.title}
                         </h2>
 
-
                         {/* DESCRIPTION */}
                         <p className='mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300'>
                             {course.description}
                         </p>
-
 
                         {/* DETAILS */}
                         <div className='flex flex-wrap gap-2 mt-5'>
@@ -131,35 +123,25 @@ const Courses = () => {
 
                         </div>
 
-
                         {/* VIEW COURSE */}
                         {canAccessCourse(course) ? (
-
                             <button
                                 onClick={() => navigate(`/courses/${course.slug}`)}
                                 className='w-full mt-6 py-2.5 rounded-lg bg-neutral-900 dark:bg-blue-500 text-white dark:text-neutral-950 font-medium hover:bg-neutral-800 dark:hover:bg-blue-600 transition-colors flex items-center justify-center gap-2'>
                                 View Course
                                 <i className="bx bx-right-arrow-alt text-lg"></i>
                             </button>
-
                         ) : (
-
                             <button
                                 onClick={() => navigate('/pricing')}
                                 className='w-full mt-6 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 font-medium hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors flex items-center justify-center gap-2'>
                                 <i className='bx bx-lock-alt text-lg'></i>
                                 Upgrade to {course.access}
-
                             </button>
-
                         )}
-
                     </div>
-
                 ))}
-
             </div>
-
         </div>
     )
 }
