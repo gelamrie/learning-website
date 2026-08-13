@@ -294,7 +294,6 @@ const CourseDetails = () => {
 
 
                                 {/* LESSON INFO */}
-
                                 <div className='flex-1'>
 
                                     <h3 className='font-semibold text-neutral-900 dark:text-white'>
