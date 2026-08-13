@@ -19,6 +19,9 @@ import Subscription from './pages/Subscription'
 import ScrollToTop from './components/ScrollToTop'
 import Progress from './pages/Progress'
 import PageTransition from './components/PageTransition'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import ProtectedRoute from './components/ProtectedRoute'
 import 'boxicons/css/boxicons.min.css'
 
 
@@ -43,7 +46,7 @@ const Navigation = () => {
 
       {/* NAVIGATION */}
       <nav className='absolute top-4 left-1/2 -translate-x-1/2 z-40 w-max max-w-[calc(100vw-7rem)]'>
-        <div className="flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg">
+        <div className='flex items-center gap-1 px-2 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm shadow-lg'>
 
           {/* COURSES */}
           <button
@@ -54,10 +57,10 @@ const Navigation = () => {
               }`}>
 
             {location.pathname === '/courses' ? (
-              <i className="bx bx-check text-lg"></i>
+              <i className='bx bx-check text-lg'></i>
             ) : (
               <>
-                <i className="bx bx-book-open mr-1"></i>
+                <i className='bx bx-book-open mr-1'></i>
                 Courses
               </>
             )}
@@ -71,10 +74,10 @@ const Navigation = () => {
               : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
               }`}>
             {location.pathname === '/progress' ? (
-              <i className="bx bx-check text-lg"></i>
+              <i className='bx bx-check text-lg'></i>
             ) : (
               <>
-                <i className="bx bx-bar-chart-alt-2 mr-1"></i>
+                <i className='bx bx-bar-chart-alt-2 mr-1'></i>
                 Progress
               </>
             )}
@@ -88,10 +91,10 @@ const Navigation = () => {
               : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
               }`}>
             {location.pathname === '/pricing' ? (
-              <i className="bx bx-check text-lg"></i>
+              <i className='bx bx-check text-lg'></i>
             ) : (
               <>
-                <i className="bx bx-purchase-tag mr-1"></i>
+                <i className='bx bx-purchase-tag mr-1'></i>
                 Pricing
               </>
             )}
@@ -121,7 +124,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="relative min-h-screen">
+      <div className='relative min-h-screen'>
         {/* BACKGROUND */}
         <Background />
         {/* NAVIGATION */}
@@ -138,14 +141,16 @@ const App = () => {
           <PageTransition>
             <Routes>
               <Route path='/' element={<Hero />} />
-              <Route path='/courses' element={<Courses />} />
-              <Route path='/courses/:slug' element={<CourseDetails />} />
-              <Route path='/courses/:slug/lesson/:lessonId' element={<Lesson />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />} />
+              <Route path='/courses' element={<ProtectedRoute><Courses /></ProtectedRoute>} />
+              <Route path='/courses/:slug'element={<ProtectedRoute><CourseDetails /></ProtectedRoute>}/>
+              <Route path='/courses/:slug/lesson/:lessonId' element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
               <Route path='/pricing' element={<Pricing />} />
               <Route path='/faqsec' element={<FaqSec />} />
-              <Route path='/courses/:slug/complete' element={<CourseComplete />} />
+              <Route path='/courses/:slug/complete' element={<ProtectedRoute><CourseComplete /></ProtectedRoute>} />
               <Route path='/subscription' element={<Subscription />} />
-              <Route path='/progress' element={<Progress />} />
+              <Route path='/progress' element={<ProtectedRoute><Progress /></ProtectedRoute>} />
 
             </Routes>
           </PageTransition>
