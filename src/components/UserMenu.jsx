@@ -32,19 +32,19 @@ const UserMenu = () => {
         await supabase.auth.signOut()
         navigate("/")
     }
-    
+
     if (!user) return null
 
     return (
         <>
-            <div className='fixed top-3 right-16 lg:top-4 lg:right-16 z-50 flex items-center gap-2'>
+            <div className='fixed top-3 right-13.5 sm:top-4 sm:right-15 md:right-20 lg:right-20 z-50 flex items-center gap-2'>
                 {/* USER */}
-                <div className='hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg'>
-                    <div className='w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center'>
+                <div className='hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg'>
+                    <div className='w-7 h-7 shrink-0 rounded-full bg-blue-500 text-white flex items-center justify-center'>
                         <i className='bx bx-user'></i>
                     </div>
 
-                    <span className='text-sm text-neutral-700 dark:text-neutral-300 max-w-[180px] truncate'>
+                    <span className='text-sm text-neutral-700 dark:text-neutral-300 max-w-[100px] md:max-w-[180px] truncate'>
                         {user.email}
                     </span>
                 </div>
@@ -52,8 +52,9 @@ const UserMenu = () => {
                 {/* LOGOUT */}
                 <button
                     onClick={() => setShowLogoutModal(true)}
-                    className='w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:scale-105 transition-transform'
-                    title='Log out'>
+                    className='w-9.5 h-9.5 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:scale-105 transition-transform z-50'
+                    title='Log out'
+                >
                     <i className='bx bx-log-out text-lg'></i>
                 </button>
 
