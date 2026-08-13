@@ -73,22 +73,16 @@ const Pricing = () => {
                 <p className='mt-4 text-lg text-neutral-600 dark:text-neutral-300'>
                     Start learning today with our flexible pricing plans.
                 </p>
-
             </div>
 
             {/* PRICING CARDS */}
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto items-stretch'>
-
                 {plans.map((plan) => (
-
                     <div
                         key={plan.name}
                         className={`relative flex flex-col rounded-2xl border p-8 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 ${plan.popular
                             ? 'border-blue-500 shadow-lg shadow-blue-500/10'
-                            : 'border-neutral-200 dark:border-neutral-800'
-                            }
-                        `}
-                    >
+                            : 'border-neutral-200 dark:border-neutral-800'}`}>
 
                         {/* MOST POPULAR */}
                         {plan.popular && (
@@ -116,7 +110,6 @@ const Pricing = () => {
                             <span className='ml-2 text-sm text-neutral-500 dark:text-neutral-400'>
                                 {plan.period}
                             </span>
-
                         </div>
 
                         {/* FEATURES */}
@@ -130,9 +123,7 @@ const Pricing = () => {
                                         {feature}
                                     </span>
                                 </div>
-
                             ))}
-
                         </div>
 
                         {/* BUTTON */}
@@ -142,9 +133,7 @@ const Pricing = () => {
                                 ${plan.popular
                                     ? 'bg-blue-500 text-neutral-950 hover:bg-blue-600'
                                     : 'bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-blue-500 dark:text-neutral-950 dark:hover:bg-blue-600'
-                                }
-                            `}
-                        >
+                                }`}>
                             {plan.button}
                         </button>
                     </div>

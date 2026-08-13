@@ -53,8 +53,7 @@ const UserMenu = () => {
                 <button
                     onClick={() => setShowLogoutModal(true)}
                     className='w-9.5 h-9.5 flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 shadow-lg hover:scale-105 transition-transform z-50'
-                    title='Log out'
-                >
+                    title='Log out'>
                     <i className='bx bx-log-out text-lg'></i>
                 </button>
 

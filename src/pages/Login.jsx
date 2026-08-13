@@ -76,8 +76,7 @@ const Login = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='you@example.com'
                                 required
-                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'
-                            />
+                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'/>
                         </div>
 
                         {/* PASSWORD */}
@@ -91,8 +90,7 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder='Enter your password'
                                 required
-                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'
-                            />
+                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500' />
                         </div>
                         {/* ERROR */}
                         {error && (
@@ -115,8 +113,7 @@ const Login = () => {
                         <button
                             type='submit'
                             disabled={loading}
-                            className='w-full py-3 rounded-lg bg-blue-500 text-neutral-950 font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-                        >
+                            className='w-full py-3 rounded-lg bg-blue-500 text-neutral-950 font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed' >
                             {loading ? 'Logging in...' : 'Log In'}
                         </button>
 
@@ -127,8 +124,7 @@ const Login = () => {
                         Don't have an account?{' '}
                         <button
                             onClick={() => navigate('/signup')}
-                            className='text-blue-500 font-medium hover:text-blue-600'
-                        >
+                            className='text-blue-500 font-medium hover:text-blue-600'>
                             Create one
                         </button>
                     </p>

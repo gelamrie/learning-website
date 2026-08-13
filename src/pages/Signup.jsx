@@ -74,8 +74,7 @@ const Signup = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='you@example.com'
                                 required
-                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'
-                            />
+                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'/>
                         </div>
 
                         {/* PASSWORD */}
@@ -91,8 +90,7 @@ const Signup = () => {
                                 placeholder='Create a password'
                                 required
                                 minLength={6}
-                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'
-                            />
+                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500' />
                         </div>
 
                         {/* CONFIRM PASSWORD */}
@@ -107,8 +105,7 @@ const Signup = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 placeholder='Confirm your password'
                                 required
-                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'
-                            />
+                                className='w-full px-4 py-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder:text-neutral-500 outline-none focus:ring-2 focus:ring-blue-500'/>
                         </div>
 
                         {/* ERROR */}
@@ -133,8 +130,7 @@ const Signup = () => {
                         <button
                             type='submit'
                             disabled={loading}
-                            className='w-full py-3 rounded-lg bg-blue-500 text-neutral-950 font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-                        >
+                            className='w-full py-3 rounded-lg bg-blue-500 text-neutral-950 font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'>
                             {loading ? 'Creating account...' : 'Create Account'}
                         </button>
 

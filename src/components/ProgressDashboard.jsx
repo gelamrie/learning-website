@@ -130,29 +130,19 @@ const ProgressDashboard = () => {
             getProgress(course) === 100
     ).length
 
-
     // LOADING SCREEN
     if (loading) {
         return (
             <div className='container mx-auto px-6 py-20 max-w-6xl animate-pulse'>
-
                 {/* HEADER */}
-
                 <div className='mb-10'>
-
                     <div className='w-32 h-3 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                     <div className='mt-3 w-64 h-10 rounded-lg bg-neutral-200 dark:bg-neutral-800'></div>
-
                     <div className='mt-4 w-96 max-w-full h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                 </div>
-
 
                 {/* SUMMARY */}
-
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10'>
-
                     <div className='h-28 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 p-6'>
                         <div className='w-28 h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
                         <div className='mt-3 w-12 h-8 rounded bg-neutral-200 dark:bg-neutral-800'></div>
@@ -164,66 +154,39 @@ const ProgressDashboard = () => {
                     </div>
 
                 </div>
-
 
                 {/* COURSE TITLE */}
-
                 <div className='w-40 h-7 rounded bg-neutral-200 dark:bg-neutral-800 mb-5'></div>
 
-
                 {/* COURSE CARDS */}
-
                 <div className='space-y-4'>
-
                     {[1, 2, 3].map((item) => (
-
                         <div
                             key={item}
-                            className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 p-6'
-                        >
+                            className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 p-6'>
 
                             {/* COURSE HEADER */}
-
                             <div className='flex items-center justify-between'>
-
                                 <div className='flex items-center gap-4'>
-
                                     <div className='w-12 h-12 rounded-xl bg-neutral-200 dark:bg-neutral-800'></div>
-
                                     <div>
-
                                         <div className='w-40 h-5 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                                         <div className='mt-2 w-28 h-3 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                                     </div>
-
                                 </div>
-
                                 <div className='w-10 h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                             </div>
-
 
                             {/* PROGRESS BAR */}
-
                             <div className='mt-5 h-2 rounded-full bg-neutral-200 dark:bg-neutral-800'></div>
 
-
                             {/* BUTTON */}
-
                             <div className='mt-5 flex justify-end'>
-
                                 <div className='w-36 h-10 rounded-lg bg-neutral-200 dark:bg-neutral-800'></div>
-
                             </div>
-
                         </div>
-
                     ))}
-
                 </div>
-
             </div>
         )
     }
