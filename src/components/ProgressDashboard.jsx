@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import courses from '../data/courses'
@@ -9,19 +9,29 @@ const ProgressDashboard = () => {
     const [progressData, setProgressData] = useState([])
     const [loading, setLoading] = useState(true)
     const [resetCourseTarget, setResetCourseTarget] = useState(null)
+    const [error, setError] = useState(null)
 
     // LOAD USER PROGRESS
     useEffect(() => {
         const loadProgress = async () => {
             setLoading(true)
+
             // Get logged-in user
             const {
                 data: { user },
-                error: userError
+                error: authError
             } = await supabase.auth.getUser()
 
-            if (userError || !user) {
-                navigate('/login')
+            if (authError) {
+                console.error('Authentication error:', authError)
+                setError('We could not verify your account. Please log in again.')
+                setLoading(false)
+                return
+            }
+
+            if (!user) {
+                setError('Your session has expired. Please log in again.')
+                setLoading(false)
                 return
             }
 
@@ -33,6 +43,7 @@ const ProgressDashboard = () => {
 
             if (error) {
                 console.error('Error loading progress:', error)
+                setError('Unable to load your learning progress.')
                 setLoading(false)
                 return
             }
@@ -130,6 +141,39 @@ const ProgressDashboard = () => {
             getProgress(course) === 100
     ).length
 
+    const totalLessons = courses.reduce(
+        (total, course) => total + course.lessons.length,
+        0
+    )
+
+    const totalCompletedLessons = courses.reduce(
+        (total, course) =>
+            total + getCompletedLessons(course.slug).length,
+        0
+    )
+
+    const overallProgress = totalLessons > 0
+        ? Math.round(
+            (totalCompletedLessons / totalLessons) * 100
+        )
+        : 0
+
+    const continueCourse = courses.find((course) => {
+        const completed = getCompletedLessons(course.slug)
+
+        return (
+            completed.length > 0 &&
+            completed.length < course.lessons.length
+        )
+    })
+
+    const continueLesson = continueCourse
+        ? continueCourse.lessons.find(
+            (lesson) =>
+                !getCompletedLessons(continueCourse.slug).includes(lesson.id)
+        )
+        : null
+
     // LOADING SCREEN
     if (loading) {
         return (
@@ -194,6 +238,33 @@ const ProgressDashboard = () => {
     return (
         <div className='container mx-auto px-6 py-20 max-w-6xl'>
 
+            {error && (
+                <div className='mb-8 rounded-2xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/30 p-5'>
+                    <div className='flex items-start gap-4'>
+                        <div className='w-10 h-10 shrink-0 rounded-xl bg-red-500/10 flex items-center justify-center'>
+                            <i className='bx bx-error-circle text-2xl text-red-500'></i>
+                        </div>
+
+                        <div className='flex-1'>
+                            <h3 className='font-semibold text-red-700 dark:text-red-400'>
+                                Something went wrong
+                            </h3>
+
+                            <p className='mt-1 text-sm text-red-600 dark:text-red-400'>
+                                {error}
+                            </p>
+
+                            <button
+                                onClick={() => window.location.reload()}
+                                className='mt-4 px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors'
+                            >
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* HEADER */}
             <div className='mb-10'>
                 <p className='uppercase text-xs tracking-widest text-blue-500 font-semibold'>
@@ -211,47 +282,108 @@ const ProgressDashboard = () => {
             </div>
 
             {/* SUMMARY */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-10'>
 
                 {/* STARTED */}
-                <div className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
+                <div className='min-h-[140px] md:min-h-[180px] flex flex-col justify-center rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
                     <div className='flex items-center justify-between'>
                         <div>
                             <p className='text-sm text-neutral-500 dark:text-neutral-400'>
                                 Courses Started
                             </p>
 
-                            <p className='mt-2 text-3xl font-bold text-neutral-900 dark:text-white'>
+                            <p className='mt-2 text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white'>
                                 {totalStarted}
                             </p>
                         </div>
 
-                        <div className='w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center'>
+                        <div className='w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center'>
                             <i className='bx bx-book-open text-2xl text-blue-500'></i>
                         </div>
                     </div>
                 </div>
 
                 {/* COMPLETED */}
-                <div className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
+                <div className='min-h-[140px] md:min-h-[180px] flex flex-col justify-center rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
                     <div className='flex items-center justify-between'>
                         <div>
                             <p className='text-sm text-neutral-500 dark:text-neutral-400'>
                                 Courses Completed
                             </p>
 
-                            <p className='mt-2 text-3xl font-bold text-neutral-900 dark:text-white'>
+                            <p className='mt-2 text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white'>
                                 {totalCompleted}
                             </p>
                         </div>
 
-                        <div className='w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center'>
+                        <div className='w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center'>
                             <i className='bx bx-check-circle text-2xl text-green-500'></i>
                         </div>
 
                     </div>
                 </div>
+
+                {/* OVERALL PROGRESS */}
+                <div className='min-h-[140px] md:min-h-[180px] flex flex-col justify-center rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
+                    <div className='flex items-center justify-between gap-4'>
+                        <div>
+                            <p className='text-sm text-neutral-500 dark:text-neutral-400'>
+                                Overall Learning Progress
+                            </p>
+                            <p className='mt-2 text-3xl font-bold text-neutral-900 dark:text-white'>
+                                {overallProgress}%
+                            </p>
+                            <p className='mt-1 text-sm text-neutral-500 dark:text-neutral-400'>
+                                {totalCompletedLessons} of {totalLessons} lessons completed
+                            </p>
+                        </div>
+                        <div className='w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center'>
+                            <i className='bx bx-bar-chart-alt-2 text-3xl text-blue-500'></i>
+                        </div>
+                    </div>
+                    <div className='mt-5 h-3 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden'>
+                        <div
+                            className='h-full rounded-full bg-blue-500 transition-all duration-500'
+                            style={{
+                                width: `${overallProgress}%`
+                            }}
+                        ></div>
+                    </div>
+                </div>
             </div>
+
+            {/* CONTINUE LEARNING */}
+            {continueCourse && continueLesson && (
+                <div className='mb-10 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
+                    <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6'>
+                        <div className='flex items-center gap-4'>
+                            <div className='w-14 h-14 shrink-0 rounded-xl bg-blue-500/10 flex items-center justify-center'>
+                                <i className={`bx ${continueCourse.icon} text-3xl text-blue-500`}></i>
+                            </div>
+                            <div>
+                                <p className='text-xs uppercase tracking-widest text-blue-500 font-semibold'>
+                                    Continue Learning
+                                </p>
+                                <h2 className='mt-1 text-xl font-bold text-neutral-900 dark:text-white'>
+                                    {continueCourse.title}
+                                </h2>
+                                <p className='mt-1 text-sm text-neutral-500 dark:text-neutral-400'>
+                                    Next: {continueLesson.title}
+                                </p>
+                                <p className='mt-2 text-sm font-medium text-blue-500'>
+                                    {getProgress(continueCourse)}% complete
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => navigate(`/courses/${continueCourse.slug}/lesson/${continueLesson.id}`)}
+                            className='shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
+                            Continue Learning
+                            <i className='bx bx-right-arrow-alt text-lg'></i>
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* COURSE PROGRESS */}
             <div>
@@ -259,24 +391,73 @@ const ProgressDashboard = () => {
                     Your Courses
                 </h2>
 
+                {totalStarted === 0 && (
+                    <div className='mb-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6 sm:p-8 text-center'>
+
+                        <div className='mx-auto w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center'>
+                            <i className='bx bx-book-open text-3xl text-blue-500'></i>
+                        </div>
+
+                        <h3 className='mt-5 text-xl font-bold text-neutral-900 dark:text-white'>
+                            Start Your Learning Journey
+                        </h3>
+
+                        <p className='mt-2 max-w-md mx-auto text-sm text-neutral-600 dark:text-neutral-400'>
+                            You haven't started a course yet. Choose a course and begin learning at your own pace.
+                        </p>
+
+                        <button
+                            onClick={() => navigate('/courses')}
+                            className='mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
+                        >
+                            Explore Courses
+                            <i className='bx bx-right-arrow-alt text-lg'></i>
+                        </button>
+
+                    </div>
+                )}
+
+                {totalCompleted === courses.length && courses.length > 0 && (
+                    <div className='mb-6 rounded-2xl border border-green-200 dark:border-green-900/50 bg-green-50/70 dark:bg-green-950/20 backdrop-blur-sm p-6 sm:p-8 text-center'>
+
+                        <div className='mx-auto w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center'>
+                            <i className='bx bx-trophy text-3xl text-green-500'></i>
+                        </div>
+
+                        <h3 className='mt-5 text-xl font-bold text-neutral-900 dark:text-white'>
+                            All Courses Completed!
+                        </h3>
+
+                        <p className='mt-2 max-w-md mx-auto text-sm text-neutral-600 dark:text-neutral-400'>
+                            Congratulations! You've completed every course available on the platform.
+                        </p>
+
+                        <button
+                            onClick={() => navigate('/courses')}
+                            className='mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
+                        >
+                            Explore Courses
+                            <i className='bx bx-right-arrow-alt text-lg'></i>
+                        </button>
+
+                    </div>
+                )}
+
                 <div className='space-y-4'>
                     {courses.map((course) => {
                         const completed =
                             getCompletedLessons(course.slug)
-
                         const progress =
                             getProgress(course)
-
                         const nextLesson =
                             getNextLesson(course)
                         return (
-
                             <div
                                 key={course.slug}
                                 className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6'>
 
                                 {/* COURSE HEADER */}
-                                <div className='flex items-start justify-between gap-4'>
+                                <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4'>
                                     <div className='flex items-center gap-4'>
                                         <div className='w-12 h-12 shrink-0 rounded-xl bg-blue-500/10 flex items-center justify-center'>
                                             <i className={`bx ${course.icon} text-2xl text-blue-500`}></i>
@@ -294,10 +475,9 @@ const ProgressDashboard = () => {
                                     </div>
 
                                     {/* PERCENTAGE */}
-                                    <span className='text-sm font-semibold text-blue-500'>
+                                    <span className='text-sm font-semibold text-blue-500 self-start sm:self-auto'>
                                         {progress}%
                                     </span>
-
                                 </div>
 
                                 {/* PROGRESS BAR */}
@@ -312,7 +492,7 @@ const ProgressDashboard = () => {
                                 </div>
 
                                 {/* ACTION */}
-                                <div className='mt-5 flex items-center justify-between gap-3'>
+                                <div className='mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3'>
                                     {completed.length > 0 ? (
                                         <button
                                             onClick={() => setResetCourseTarget(course)}

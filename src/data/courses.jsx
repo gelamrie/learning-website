@@ -1,9 +1,20 @@
 import pythonLessons from './pythonLessons.jsx'
+import pythonQuiz from './pythonQuiz.jsx'
+
 import webDevelopmentLessons from './webDevelopmentLessons.jsx'
+import webDevelopmentQuiz from './webDevelopmentQuiz.jsx'
+
 import uiUxLessons from './uiUxLessons.jsx'
+import uiUxQuiz from './uiUxQuiz.jsx'
+
 import dataAnalyticsLessons from './dataAnalyticsLessons.jsx'
+import dataAnalyticsQuiz from './dataAnalyticsQuiz.jsx'
+
 import cyberSecurityLessons from './cyberSecurityLessons.jsx'
+import cyberSecurityQuiz from './cyberSecurityQuiz.jsx'
+
 import databaseLessons from './databaseLessons.jsx'
+import databaseQuiz from './databaseQuiz.jsx'
 
 const courses = [
     {
@@ -16,7 +27,8 @@ const courses = [
         icon: 'bx-terminal',
         slug: 'python',
         access: 'Free',
-        lessons: pythonLessons
+        lessons: pythonLessons,
+        quiz: pythonQuiz
     },
 
     {
@@ -29,7 +41,8 @@ const courses = [
         icon: 'bx-code-alt',
         slug: 'web-development',
         access: 'Free',
-        lessons: webDevelopmentLessons
+        lessons: webDevelopmentLessons,
+        quiz: webDevelopmentQuiz
     },
 
     {
@@ -42,7 +55,8 @@ const courses = [
         icon: 'bx-palette',
         slug: 'ui-ux-design',
         access: 'Pro',
-        lessons: uiUxLessons
+        lessons: uiUxLessons,
+        quiz: uiUxQuiz
     },
 
     {
@@ -55,7 +69,8 @@ const courses = [
         icon: 'bx-bar-chart-alt-2',
         slug: 'data-analytics',
         access: 'Pro',
-        lessons: dataAnalyticsLessons
+        lessons: dataAnalyticsLessons,
+        quiz: dataAnalyticsQuiz
     },
 
     {
@@ -68,7 +83,8 @@ const courses = [
         icon: 'bx-shield-quarter',
         slug: 'cybersecurity',
         access: 'Pro',
-        lessons: cyberSecurityLessons
+        lessons: cyberSecurityLessons,
+        quiz: cyberSecurityQuiz
     },
 
     {
@@ -81,7 +97,8 @@ const courses = [
         icon: 'bx-data',
         slug: 'database-management',
         access: 'Pro',
-        lessons: databaseLessons
+        lessons: databaseLessons,
+        quiz: databaseQuiz
     }
 ]
 

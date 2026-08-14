@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const FaqSec = () => {
     const [openIndex, setOpenIndex] = useState(null);
@@ -48,7 +48,7 @@ const FaqSec = () => {
     const copyEmail = async () => {
         try {
             await navigator.clipboard.writeText(email);
-        } catch (error) {
+        } catch {
             const textArea = document.createElement("textarea");
             textArea.value = email;
             document.body.appendChild(textArea);
