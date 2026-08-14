@@ -14,10 +14,10 @@ const cyberSecurityQuiz = [
         id: 2,
         question: 'Which part of the CIA triad ensures that information is accessible when needed?',
         options: [
-            'Availability',
             'Confidentiality',
             'Integrity',
-            'Authentication'
+            'Authentication',
+            'Availability'
         ],
         answer: 'Availability'
     },
@@ -36,8 +36,8 @@ const cyberSecurityQuiz = [
         id: 4,
         question: 'What is the main purpose of a firewall?',
         options: [
-            'To monitor and control network traffic',
             'To create passwords',
+            'To monitor and control network traffic',
             'To store files permanently',
             'To increase internet speed'
         ],
@@ -47,9 +47,9 @@ const cyberSecurityQuiz = [
         id: 5,
         question: 'Which practice helps protect an account from unauthorized access?',
         options: [
-            'Using strong and unique passwords',
             'Sharing passwords with others',
             'Using the same password everywhere',
+            'Using strong and unique passwords',
             'Disabling security updates'
         ],
         answer: 'Using strong and unique passwords'

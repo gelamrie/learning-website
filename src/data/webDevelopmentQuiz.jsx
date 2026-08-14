@@ -14,10 +14,10 @@ const webDevelopmentQuiz = [
         id: 2,
         question: 'Which HTML element is used to create a hyperlink?',
         options: [
-            '<a>',
             '<link>',
             '<href>',
-            '<url>'
+            '<url>',
+            '<a>'
         ],
         answer: '<a>'
     },
@@ -25,8 +25,8 @@ const webDevelopmentQuiz = [
         id: 3,
         question: 'Which language is primarily used to style HTML pages?',
         options: [
-            'CSS',
             'Python',
+            'CSS',
             'SQL',
             'Java'
         ],
@@ -47,8 +47,8 @@ const webDevelopmentQuiz = [
         id: 5,
         question: 'Which CSS property is used to change the text color?',
         options: [
-            'color',
             'font-color',
+            'color',
             'text-color',
             'foreground'
         ],
