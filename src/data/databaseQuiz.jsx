@@ -3,9 +3,9 @@ const databaseQuiz = [
         id: 1,
         question: 'What is a database?',
         options: [
-            'An organized collection of data',
             'A programming language',
             'A type of computer network',
+            'An organized collection of data',
             'A web browser'
         ],
         answer: 'An organized collection of data'
@@ -25,8 +25,8 @@ const databaseQuiz = [
         id: 3,
         question: 'What is a primary key used for?',
         options: [
-            'Uniquely identifying each record in a table',
             'Storing duplicate records',
+            'Uniquely identifying each record in a table',
             'Formatting a database',
             'Connecting to the internet'
         ],
@@ -36,10 +36,10 @@ const databaseQuiz = [
         id: 4,
         question: 'Which SQL command is used to retrieve data from a table?',
         options: [
-            'SELECT',
             'INSERT',
             'UPDATE',
-            'DELETE'
+            'DELETE',
+            'SELECT'
         ],
         answer: 'SELECT'
     },
@@ -47,8 +47,8 @@ const databaseQuiz = [
         id: 5,
         question: 'What is a foreign key used for?',
         options: [
-            'Creating a relationship between tables',
             'Deleting a database',
+            'Creating a relationship between tables',
             'Encrypting database records',
             'Sorting data alphabetically'
         ],

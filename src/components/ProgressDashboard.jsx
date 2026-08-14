@@ -38,7 +38,7 @@ const ProgressDashboard = () => {
             // Get all progress records for this user
             const { data, error } = await supabase
                 .from('user_progress')
-                .select('course_slug, completed_lessons')
+                .select('course_slug, completed_lessons, quiz_passed')
                 .eq('user_id', user.id)
 
             if (error) {
@@ -108,6 +108,14 @@ const ProgressDashboard = () => {
         return progress?.completed_lessons || []
     }
 
+    const hasPassedQuiz = (slug) => {
+        const progress = progressData.find(
+            (item) => item.course_slug === slug
+        )
+
+        return progress?.quiz_passed === true
+    }
+
     // GET COURSE PROGRESS
     const getProgress = (course) => {
         const completed = getCompletedLessons(course.slug)
@@ -138,7 +146,8 @@ const ProgressDashboard = () => {
 
     const totalCompleted = courses.filter(
         (course) =>
-            getProgress(course) === 100
+            getProgress(course) === 100 &&
+            hasPassedQuiz(course.slug)
     ).length
 
     const totalLessons = courses.reduce(
@@ -507,16 +516,26 @@ const ProgressDashboard = () => {
                                     )}
 
                                     <div className='flex items-center gap-2'>
-                                        {progress === 100 ? (
+                                        {progress === 100 && hasPassedQuiz(course.slug) ? (
                                             <button
                                                 onClick={() =>
-                                                    navigate(
-                                                        `/courses/${course.slug}/complete`
-                                                    )
+                                                    navigate(`/courses/${course.slug}/complete`)
                                                 }
-                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/10 text-green-500 font-medium hover:bg-green-500/20 transition-colors'>
+                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-green-500/10 text-green-500 font-medium hover:bg-green-500/20 transition-colors'
+                                            >
                                                 <i className='bx bx-check-circle'></i>
                                                 Completed
+                                            </button>
+                                        ) : progress === 100 ? (
+                                            
+                                            <button
+                                                onClick={() =>
+                                                    navigate(`/courses/${course.slug}/quiz`)
+                                                }
+                                                className='flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
+                                            >
+                                                Take Quiz
+                                                <i className='bx bx-right-arrow-alt'></i>
                                             </button>
                                         ) : nextLesson ? (
                                             <button

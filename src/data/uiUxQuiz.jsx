@@ -14,10 +14,10 @@ const uiUxQuiz = [
         id: 2,
         question: 'What does UI stand for?',
         options: [
-            'User Interface',
             'Universal Interface',
             'User Interaction',
-            'Unified Interface'
+            'Unified Interface',
+            'User Interface'
         ],
         answer: 'User Interface'
     },
@@ -25,8 +25,8 @@ const uiUxQuiz = [
         id: 3,
         question: 'What is the main goal of UX design?',
         options: [
-            'To improve the user experience',
             'To write backend code',
+            'To improve the user experience',
             'To increase the number of buttons',
             'To create database tables'
         ],
@@ -36,9 +36,9 @@ const uiUxQuiz = [
         id: 4,
         question: 'Which activity helps designers understand their users?',
         options: [
-            'User research',
             'Database normalization',
             'Code compilation',
+            'User research',
             'Server deployment'
         ],
         answer: 'User research'

@@ -3,10 +3,10 @@ const dataAnalyticsQuiz = [
         id: 1,
         question: 'What is data analytics?',
         options: [
-            'The process of examining data to find useful insights',
             'The process of designing websites',
             'The process of creating computer hardware',
-            'The process of writing only frontend code'
+            'The process of writing only frontend code',
+            'The process of examining data to find useful insights'
         ],
         answer: 'The process of examining data to find useful insights'
     },
@@ -25,8 +25,8 @@ const dataAnalyticsQuiz = [
         id: 3,
         question: 'What is data visualization used for?',
         options: [
-            'Presenting data in a visual and understandable way',
             'Encrypting passwords',
+            'Presenting data in a visual and understandable way',
             'Creating database connections',
             'Writing application code'
         ],
@@ -47,10 +47,10 @@ const dataAnalyticsQuiz = [
         id: 5,
         question: 'What is the purpose of data cleaning?',
         options: [
-            'To identify and correct inaccurate or inconsistent data',
             'To create website layouts',
             'To increase the size of a database',
-            'To remove all numerical values'
+            'To remove all numerical values',
+            'To identify and correct inaccurate or inconsistent data'
         ],
         answer: 'To identify and correct inaccurate or inconsistent data'
     }
