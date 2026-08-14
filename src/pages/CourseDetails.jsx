@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import courses from '../data/courses'
@@ -8,6 +8,7 @@ const CourseDetails = () => {
     const { slug } = useParams()
     const navigate = useNavigate()
     const [showResetConfirm, setShowResetConfirm] = useState(false)
+    const [completedLessons, setCompletedLessons] = useState([])
 
     const selectedPlan =
         localStorage.getItem('selectedPlan') || 'Free'
@@ -15,6 +16,37 @@ const CourseDetails = () => {
     const course = courses.find(
         (course) => course.slug === slug
     )
+
+    // Load progress from Supabase
+    useEffect(() => {
+        if (!course) return
+
+        const loadProgress = async () => {
+            const {
+                data: { user }
+            } = await supabase.auth.getUser()
+
+            if (!user) return
+
+            const { data, error } = await supabase
+                .from('user_progress')
+                .select('completed_lessons')
+                .eq('user_id', user.id)
+                .eq('course_slug', slug)
+                .maybeSingle()
+
+            if (error) {
+                console.error('Error loading progress:', error)
+                return
+            }
+
+            if (data) {
+                setCompletedLessons(data.completed_lessons || [])
+            }
+        }
+
+        loadProgress()
+    }, [slug, course])
 
     // Course doesn't exist
     if (!course) {
@@ -32,46 +64,6 @@ const CourseDetails = () => {
             </div>
         )
     }
-
-    const [completedLessons, setCompletedLessons] = useState([])
-    const [loading, setLoading] = useState(true)
-
-    // Load progress from Supabase
-    useEffect(() => {
-        const loadProgress = async () => {
-            setLoading(true)
-
-            const {
-                data: { user }
-            } = await supabase.auth.getUser()
-
-            if (!user) {
-                setLoading(false)
-                return
-            }
-
-            const { data, error } = await supabase
-                .from('user_progress')
-                .select('completed_lessons')
-                .eq('user_id', user.id)
-                .eq('course_slug', slug)
-                .maybeSingle()
-
-            if (error) {
-                console.error('Error loading progress:', error)
-                setLoading(false)
-                return
-            }
-
-            if (data) {
-                setCompletedLessons(data.completed_lessons || [])
-            }
-
-            setLoading(false)
-        }
-
-        loadProgress()
-    }, [slug])
 
     const totalLessons = course.lessons.length
 

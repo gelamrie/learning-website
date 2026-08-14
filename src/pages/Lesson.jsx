@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
@@ -62,7 +62,7 @@ const Lesson = () => {
 
         loadProgress()
     }, [slug, navigate])
-    
+
     if (loading) {
         return (
             <div className='container mx-auto px-6 py-20 max-w-4xl animate-pulse'>
@@ -81,18 +81,22 @@ const Lesson = () => {
 
                 {/* CONTENT */}
                 <div className='mt-10 space-y-4'>
-
                     <div className='w-full h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
                     <div className='w-full h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
                     <div className='w-5/6 h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
                     <div className='w-full h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
                     <div className='w-4/5 h-4 rounded bg-neutral-200 dark:bg-neutral-800'></div>
-
                 </div>
 
                 {/* COMPLETE BUTTON */}
                 <div className='mt-10 flex justify-center'>
                     <div className='w-40 h-12 rounded-lg bg-neutral-200 dark:bg-neutral-800'></div>
+                </div>
+
+                {/* NAVIGATION */}
+                <div className='mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800 flex justify-between'>
+                    <div className='w-28 h-10 rounded-lg bg-neutral-200 dark:bg-neutral-800'></div>
+                    <div className='w-32 h-10 rounded-lg bg-neutral-200 dark:bg-neutral-800'></div>
                 </div>
             </div>
         )
@@ -324,18 +328,19 @@ const Lesson = () => {
                         }
 
                         <i className={`bx ${isCompleted
-                                ? 'bx-right-arrow-alt'
-                                : 'bx-lock-alt'
-                                }`} ></i>
+                            ? 'bx-right-arrow-alt'
+                            : 'bx-lock-alt'
+                            }`} ></i>
                     </button>
                 ) : (
                     <button
                         onClick={() =>
-                            navigate(`/courses/${slug}/complete`)
+                            navigate(`/courses/${slug}/quiz`)
                         }
-                        className='flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
-                        Finish Course
-                        <i className='bx bx-check'></i>
+                        className='flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
+                    >
+                        Take Quiz
+                        <i className='bx bx-edit-alt'></i>
                     </button>
                 )}
             </div>

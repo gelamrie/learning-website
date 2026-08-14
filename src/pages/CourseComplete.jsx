@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import courses from '../data/courses'
@@ -8,6 +8,7 @@ const CourseComplete = () => {
     const { slug } = useParams()
 
     const [completedLessons, setCompletedLessons] = useState([])
+    const [quizPassed, setQuizPassed] = useState(false)
     const [loading, setLoading] = useState(true)
 
     const course = courses.find(
@@ -20,11 +21,9 @@ const CourseComplete = () => {
             navigate('/courses', { replace: true })
         }
     }, [course, navigate])
-
     // LOAD PROGRESS
     useEffect(() => {
         const loadProgress = async () => {
-
             if (!course) {
                 return
             }
@@ -41,7 +40,7 @@ const CourseComplete = () => {
 
             const { data, error } = await supabase
                 .from('user_progress')
-                .select('completed_lessons')
+                .select('completed_lessons, quiz_passed')
                 .eq('user_id', user.id)
                 .eq('course_slug', slug)
                 .maybeSingle()
@@ -58,6 +57,10 @@ const CourseComplete = () => {
 
             setCompletedLessons(
                 data?.completed_lessons || []
+            )
+
+            setQuizPassed(
+                data?.quiz_passed === true
             )
 
             setLoading(false)
@@ -83,13 +86,24 @@ const CourseComplete = () => {
      */
     useEffect(() => {
 
-        if (
-            !loading &&
-            course &&
-            firstIncompleteLesson
-        ) {
+        if (loading || !course) {
+            return
+        }
+
+        // Lessons are not finished
+        if (firstIncompleteLesson) {
             navigate(
                 `/courses/${slug}/lesson/${firstIncompleteLesson.id}`,
+                { replace: true }
+            )
+
+            return
+        }
+
+        // Lessons are finished but quiz is not passed
+        if (!quizPassed) {
+            navigate(
+                `/courses/${slug}/quiz`,
                 { replace: true }
             )
         }
@@ -98,6 +112,7 @@ const CourseComplete = () => {
         loading,
         course,
         firstIncompleteLesson,
+        quizPassed,
         navigate,
         slug
     ])
@@ -137,19 +152,18 @@ const CourseComplete = () => {
 
 
     // COURSE NOT FOUND
- 
     if (!course) {
         return null
     }
 
+
     // COURSE NOT COMPLETE
-     
-    if (firstIncompleteLesson) {
+    if (firstIncompleteLesson || !quizPassed) {
         return null
     }
 
-    //COURSE COMPLETE
-     
+
+    // COURSE COMPLETE
     return (
         <div className='min-h-[80vh] flex items-center justify-center px-6'>
 
@@ -172,7 +186,7 @@ const CourseComplete = () => {
                 </h2>
 
                 <p className='mt-4 text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed'>
-                    You've successfully completed every lesson in this course.
+                    You've successfully completed every lesson and passed the quiz.
                 </p>
 
                 <p className='mt-3 text-sm text-neutral-500 dark:text-neutral-400'>
@@ -183,15 +197,13 @@ const CourseComplete = () => {
 
                     <button
                         onClick={() => navigate(`/courses/${slug}`)}
-                        className='px-5 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'
-                    >
+                        className='px-5 py-2.5 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'>
                         Review Course
                     </button>
 
                     <button
                         onClick={() => navigate('/courses')}
-                        className='px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'
-                    >
+                        className='px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium hover:bg-blue-600 transition-colors'>
                         Explore More Courses
                     </button>
 

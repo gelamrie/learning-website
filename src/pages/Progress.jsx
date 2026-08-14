@@ -1,4 +1,3 @@
-import React from 'react'
 import ProgressDashboard from '../components/ProgressDashboard'
 
 const Progress = () => {

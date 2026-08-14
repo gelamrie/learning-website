@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -23,6 +23,9 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ProtectedRoute from './components/ProtectedRoute'
 import UserMenu from './components/UserMenu'
+import AIChatbot from './components/AIChatbot'
+import { supabase } from './lib/supabase'
+import Quiz from './pages/Quiz'
 import 'boxicons/css/boxicons.min.css'
 
 
@@ -167,6 +170,7 @@ const App = () => {
         <Navigation />
         <AuthRedirect />
         <UserMenu />
+        <AIChatbot />
         {/* DARK MODE */}
         <button
           onClick={toggleDarkMode}
@@ -184,6 +188,7 @@ const App = () => {
               <Route path='/courses' element={<ProtectedRoute><Courses /></ProtectedRoute>} />
               <Route path='/courses/:slug' element={<ProtectedRoute><CourseDetails /></ProtectedRoute>} />
               <Route path='/courses/:slug/lesson/:lessonId' element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
+              <Route path='/courses/:slug/quiz' element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
               <Route path='/pricing' element={<Pricing />} />
               <Route path='/faqsec' element={<FaqSec />} />
               <Route path='/courses/:slug/complete' element={<ProtectedRoute><CourseComplete /></ProtectedRoute>} />
