@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import courses from '../data/courses'
 import { supabase } from '../lib/supabase'
@@ -11,10 +11,13 @@ const Quiz = () => {
         (course) => course.slug === slug
     )
 
-    const quiz = course?.quiz || []
+    const quiz = useMemo(() => {
+        return [...(course?.quiz || [])]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 10)
+    }, [course])
 
     const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [selectedAnswer, setSelectedAnswer] = useState(null)
     const [answers, setAnswers] = useState({})
     const [submitted, setSubmitted] = useState(false)
     const [submitting, setSubmitting] = useState(false)
@@ -69,8 +72,6 @@ const Quiz = () => {
 
     const question = quiz[currentQuestion]
     const handleAnswer = (answer) => {
-        setSelectedAnswer(answer)
-
         setAnswers((previous) => ({
             ...previous,
             [question.id]: answer
@@ -80,24 +81,12 @@ const Quiz = () => {
     const handleNext = () => {
         if (currentQuestion < quiz.length - 1) {
             setCurrentQuestion((previous) => previous + 1)
-
-            const nextQuestion = quiz[currentQuestion + 1]
-
-            setSelectedAnswer(
-                answers[nextQuestion.id] || null
-            )
         }
     }
 
     const handlePrevious = () => {
         if (currentQuestion > 0) {
             setCurrentQuestion((previous) => previous - 1)
-
-            const previousQuestion = quiz[currentQuestion - 1]
-
-            setSelectedAnswer(
-                answers[previousQuestion.id] || null
-            )
         }
     }
 
@@ -216,15 +205,15 @@ const Quiz = () => {
                                 <div
                                     key={item.id}
                                     className={`p-4 rounded-xl border ${isCorrect
-                                            ? 'border-green-500/30 bg-green-500/5'
-                                            : 'border-red-500/30 bg-red-500/5'
+                                        ? 'border-green-500/30 bg-green-500/5'
+                                        : 'border-red-500/30 bg-red-500/5'
                                         }`}
                                 >
                                     <div className='flex items-start gap-3'>
                                         <i
                                             className={`bx ${isCorrect
-                                                    ? 'bx-check-circle text-green-500'
-                                                    : 'bx-x-circle text-red-500'
+                                                ? 'bx-check-circle text-green-500'
+                                                : 'bx-x-circle text-red-500'
                                                 } text-xl mt-0.5`}
                                         ></i>
 
@@ -246,15 +235,16 @@ const Quiz = () => {
                                                 </span>
                                             </p>
 
-                                            {!isCorrect && (
-                                                <p className='mt-1 text-sm'>
-                                                    <span className='font-medium text-green-600 dark:text-green-400'>
-                                                        Correct answer:
-                                                    </span>{' '}
-                                                    <span className='text-neutral-600 dark:text-neutral-400'>
-                                                        {item.answer}
-                                                    </span>
-                                                </p>
+                                            {isCorrect && item.explanation && (
+                                                <div className='mt-4 p-4 rounded-lg bg-blue-500/5 border border-blue-500/20'>
+                                                    <p className='font-medium text-blue-600 dark:text-blue-400'>
+                                                        Explanation
+                                                    </p>
+
+                                                    <p className='mt-1 text-sm text-neutral-600 dark:text-neutral-300'>
+                                                        {item.explanation}
+                                                    </p>
+                                                </div>
                                             )}
                                         </div>
                                     </div>
@@ -289,7 +279,6 @@ const Quiz = () => {
                                 <button
                                     onClick={() => {
                                         setCurrentQuestion(0)
-                                        setSelectedAnswer(null)
                                         setAnswers({})
                                         setSubmitted(false)
                                     }}
@@ -363,14 +352,12 @@ const Quiz = () => {
                 <div className='mt-6 space-y-3'>
                     {question.options.map((option) => {
                         const selected =
-                            selectedAnswer === option
+                            answers[question.id] === option
 
                         return (
                             <button
                                 key={option}
-                                onClick={() =>
-                                    handleAnswer(option)
-                                }
+                                onClick={() => handleAnswer(option)}
                                 className={`w-full text-left px-4 py-4 rounded-xl border transition-colors ${selected
                                     ? 'border-blue-500 bg-blue-500/10 text-blue-500'
                                     : 'border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:border-blue-400 hover:bg-blue-500/5'
@@ -409,7 +396,7 @@ const Quiz = () => {
                     {currentQuestion === quiz.length - 1 ? (
                         <button
                             onClick={handleSubmit}
-                            disabled={!selectedAnswer || submitting}
+                            disabled={!answers[question.id] || submitting}
                             className='px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors'>
                             {submitting ? 'Submitting...' : 'Submit Quiz'}
 
@@ -421,7 +408,7 @@ const Quiz = () => {
                     ) : (
                         <button
                             onClick={handleNext}
-                            disabled={!selectedAnswer}
+                            disabled={!answers[question.id]}
                             className='px-5 py-2.5 rounded-lg bg-blue-500 text-neutral-950 font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors'>
                             Next
                             <i className='bx bx-right-arrow-alt ml-1'></i>
@@ -429,7 +416,7 @@ const Quiz = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
