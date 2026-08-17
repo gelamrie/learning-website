@@ -342,6 +342,59 @@ const Quiz = () => {
                 </div>
             </div>
 
+            {/* QUESTION NAVIGATOR */}
+            <div className='mb-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-4 sm:p-5'>
+                <div className='flex items-center justify-between gap-3'>
+                    <p className='text-sm font-medium text-neutral-900 dark:text-white'>
+                        Questions
+                    </p>
+
+                    <p className='text-xs text-neutral-500 dark:text-neutral-400'>
+                        {Object.keys(answers).length} / {quiz.length} answered
+                    </p>
+                </div>
+
+                <div className='mt-4 grid grid-cols-5 sm:grid-cols-10 gap-2'>
+                    {quiz.map((item, index) => {
+                        const answered = answers[item.id]
+                        const current = currentQuestion === index
+
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={() => setCurrentQuestion(index)}
+                                className={`h-10 rounded-lg border text-sm font-medium transition-colors
+                        ${current
+                                        ? 'border-blue-500 bg-blue-500 text-white'
+                                        : answered
+                                            ? 'border-green-500 bg-green-500/10 text-green-600 dark:text-green-400'
+                                            : 'border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-blue-400 hover:bg-blue-500/5'
+                                    }`}
+                            >
+                                {index + 1}
+                            </button>
+                        )
+                    })}
+                </div>
+
+                <div className='mt-4 flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400'>
+                    <div className='flex items-center gap-2'>
+                        <span className='w-3 h-3 rounded-full bg-blue-500'></span>
+                        Current
+                    </div>
+
+                    <div className='flex items-center gap-2'>
+                        <span className='w-3 h-3 rounded-full bg-green-500'></span>
+                        Answered
+                    </div>
+
+                    <div className='flex items-center gap-2'>
+                        <span className='w-3 h-3 rounded-full border border-neutral-400 dark:border-neutral-600'></span>
+                        Unanswered
+                    </div>
+                </div>
+            </div>
+
             {/* QUESTION CARD */}
             <div className='rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-sm p-6 sm:p-8'>
                 <h2 className='text-xl sm:text-2xl font-semibold text-neutral-900 dark:text-white'>
